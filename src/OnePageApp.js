@@ -5,28 +5,20 @@ import { Provider } from 'react-redux'
 
 import { connect } from 'react-redux'
 
-import { 
-  askLocationPermission, 
-  userToggleFavorite, 
-  fetchUserIfNeeded,
-  setNearbyStations,
-  startUpFetch
- } from './actions/user'
-
-import {
-  fetchScheduleIfNeeded
-} from './actions/schedule'
+import startUpFetch from './start_up'
 
 export default class OnePageApp extends React.Component {
   componentDidMount() {
-    //addevent listener to appstate change
-    store.dispatch(askLocationPermission())
-    store.dispatch(fetchUserIfNeeded())
-    store.dispatch(startUpFetch())
-    // store.dispatch(fetchScheduleIfNeeded())
+    AppState.addEventListener("change", this.handleAppStateChange);
+    startUpFetch()
   }
   componentWillUnmount() {
-    //remove event listener for appstate
+    AppState.removeEventListener("change", this.handleAppStateChange);
+  }
+  handleAppStateChange = (appState) => {
+    if (appState === "active") {
+      startUpFetch()
+    }
   }
   render() {
     return (

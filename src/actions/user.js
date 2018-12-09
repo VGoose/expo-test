@@ -19,16 +19,7 @@ export const userTypes = {
 	USER_ERROR: 'USER_ERROR',
 }
 
-export const startUpFetch = () => dispatch => {
-	dispatch(locateUser())
-		.then(pos => {
-			dispatch(userLocated(pos.coords.latitude, pos.coords.longitude))
-			dispatch(fetchWeatherIfNeeded())
-			dispatch(setNearbyStations(0.5))
-			}
-		)
-		.catch(err => dispatch(locateError(err)))
-}
+
 export const askLocationPermission = () => dispatch => {
 	Permissions.askAsync(Permissions.LOCATION)
 		.then(
@@ -88,7 +79,7 @@ const userLocate = () => {
 	}
 }
 
-const userLocated = (lat, lon) => {
+export const userLocated = (lat, lon) => {
 	return {
 		type: userTypes.USER_LOCATED,
 		lat,
