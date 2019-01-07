@@ -10,6 +10,7 @@ const initialState = {
   isFetching: false,
   currentForecast: {},
   hourlyForecast: [],
+  forecastLocation: '',
   lastUpdated: null,
   isF: true,
   error: null
@@ -24,6 +25,7 @@ export default function(state = initialState, action) {
     case WEATHER_RECEIVE:
       return {
         ...state,
+        forecastLocation: action.forecastLocation,
         currentForecast: action.currentForecast,
         hourlyForecast: action.hourlyForecast,
         lastUpdated: Date.now(),

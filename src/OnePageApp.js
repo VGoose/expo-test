@@ -1,10 +1,11 @@
+"use strict";
 import React from 'react'
-import { AppState, StyleSheet, Text, View } from 'react-native'
+import { AppState, StyleSheet, AsyncStorage } from 'react-native'
 import store from './store'
 import { Provider } from 'react-redux'
-
 import { connect } from 'react-redux'
 
+import AppNav from './navigation'
 import startUpFetch from './start_up'
 
 export default class OnePageApp extends React.Component {
@@ -22,11 +23,10 @@ export default class OnePageApp extends React.Component {
   }
   render() {
     return (
-      <Provider store={store}>
-        <View style={styles.container}>
-          <Text>One Page App</Text>
-        </View>
-      </Provider>
+        <Provider store={store}>
+          <AppNav />
+        </Provider>
+
     )
   }
 }

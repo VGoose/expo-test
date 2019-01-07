@@ -6,7 +6,7 @@ import {
 
 const initialState = {
 	isFetching: false,
-	schedule: {},
+	schedule: [],
 	lastUpdated: null,
 	error: null,
 }
@@ -22,7 +22,7 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				schedule: action.schedule,
-				lastUpdated: action.lastUpdated,
+				lastUpdated: new Date(action.lastUpdated),
 				error: null,
 				isFetching: false
 			}

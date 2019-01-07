@@ -12,7 +12,7 @@ const initialState = {
     isAskingPermission: false,
     location: null,
     isLocating: false,
-    nearbyStations: null,
+    nearbyStations: [], 
     error: null,
     isFetching: false,
     favoriteStations: [],

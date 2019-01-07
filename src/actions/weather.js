@@ -6,9 +6,7 @@ export const weatherTypes = {
   WEATHER_ERROR: 'WEATHER_ERROR'
 }
 export const fetchWeatherIfNeeded = () => (dispatch, getState) => {
-  // const { lat, lon } = getState().user.location
-  const lat = 40.7128
-  const lon = -74.0
+  const { lat, lon } = getState().user.location
   shouldWeatherFetch(getState()) 
     ? dispatch(getWeather(lat, lon))
     : null
@@ -45,6 +43,7 @@ const weatherRequest = () => {
 const weatherReceive = (data) => {
   return {
     type: weatherTypes.WEATHER_RECEIVE,
+    forecastLocation: data.timezone,
     currentForecast: data.currently,
     hourlyForecast: data.hourly.data
   }

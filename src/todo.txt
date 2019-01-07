@@ -1,0 +1,25 @@
+data refreshing in individual countdown clocks causes repaint/refresh of entire module
+  -issue with swiper
+
+text alignment issue with different font sizes - there's some invisible padding 
+
+props inside componentdidmount are empty
+  -when components are first mounted - props are not loaded 
+
+figure out how to get head signs from shitty data
+  -just take the last element in trip array to find the final destination
+
+why first station doesn't have departures?
+  -arrival time and departure times are identical at all stations except at initial stations where it will 
+  have one or the other only.
+  -time on the station = arrival || departure
+
+how to re-render favorite button in flatlist of countdownclocks 
+  -extraData prop
+
+searchbar not focusing after first render
+
+https back end
+back end caching
+
+scaling 

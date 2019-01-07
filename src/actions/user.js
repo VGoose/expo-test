@@ -131,14 +131,10 @@ export const userToggleFavorite = (id) => (dispatch, getState) => {
 	let data
 	if (favs.some(s => s.stop_id === id)) {
 		//remove from favorites
-		data = {
-			favorite_stations: favs.filter(s => s.stop_id !== id)
-		}
+		data = favs.filter(s => s.stop_id !== id)
 	} else {
 		//add to favorites
-		data = {
-			favorite_stations: [...getState().user.favoriteStations, stationObj]
-		}
+		data = [...getState().user.favoriteStations, stationObj]
 	}
 	dispatch(userUpdateData(data))
 }
@@ -157,6 +153,9 @@ const userFetch = () => dispatch => {
 				(resolve, reject) => {
 					let data = {}
 					resultsArr.forEach(([k, v]) => {
+						if (v === null) {
+							return
+						}
 						//in case v is not json string but plain string
 						try {
 							data[k] = JSON.parse(v)
@@ -178,9 +177,9 @@ const userUpdateData = (data) => (dispatch, getState) => {
 }
 const userPostData = (data) => dispatch => {
 	//TODO: generalize posting data for all type of data
-	AsyncStorage.setItem('user.favoriteStations', JSON.stringify(data))
-		.then(() => AsyncStorage.getItem('user.favoriteStations'))
-		.then(result => dispatch(userReceive(JSON.parse(result))))
+	AsyncStorage.setItem('favoriteStations', JSON.stringify(data))
+		.then(() => AsyncStorage.getItem('favoriteStations'))
+		.then(result => console.log(data.length) || dispatch(userReceive({'favoriteStations': JSON.parse(result)})))
 		.catch(error => dispatch(userDenied()))
 }
 

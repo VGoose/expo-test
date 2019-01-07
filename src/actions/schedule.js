@@ -14,7 +14,7 @@ const scheduleReceive = (data) => {
     return {
         type: SCHEDULE_RECEIVE,
         lastUpdated: data.time,
-        schedule: data.schedule
+        schedule: data.schedules
     }
 }
 const scheduleDeny = (err) => {
@@ -25,16 +25,17 @@ const scheduleDeny = (err) => {
 }
 const scheduleFetch = () => (dispatch, getState) => {
     dispatch(scheduleRequest())
-    axios.get(`http://localhost:5000/api/schedule/`)
+    axios.get(`/api/schedule/`)
         .then(
             res => dispatch(scheduleReceive(res.data)),
             err => dispatch(scheduleDeny(err))
         )
-
 }
 
 const shouldScheduleFetch = (state) => {
-    if (Date.now() - state.schedule.lastUpdated < 30000) {
+    //convert from string to
+    const msSinceLastUpdate = Date.now() - state.schedule.lastUpdated
+    if (msSinceLastUpdate < 30000 || state.schedule.isFetching) {
         return false
     } if (state.user.favoriteStations) {
         return true
@@ -43,7 +44,8 @@ const shouldScheduleFetch = (state) => {
 }
 
 export const fetchScheduleIfNeeded = () => (dispatch, getState) => {
+    console.log('if needed')
     shouldScheduleFetch(getState())
-        ? dispatch(scheduleFetch())
-        : null
+        ? console.log('yes') || dispatch(scheduleFetch())
+        : console.log('no') || null
 }
