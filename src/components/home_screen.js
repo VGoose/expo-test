@@ -23,6 +23,7 @@ const HomeScreen = ({
   fetchSchedule,
   //weather props
   weatherIsFetching,
+  forecastLocation,
   isF,
   currentForecast = {},
   hourlyForecast = [],
@@ -42,6 +43,7 @@ const HomeScreen = ({
           weatherError={weatherError}
           fetchWeather={fetchWeather}
           hourlyForecast={hourlyForecast}
+          city={forecastLocation}
         />
         <TransitModule
           fetchSchedule={fetchSchedule}

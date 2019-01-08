@@ -1,25 +1,43 @@
+//DONE ------------------
 data refreshing in individual countdown clocks causes repaint/refresh of entire module
   -issue with swiper
-
-text alignment issue with different font sizes - there's some invisible padding 
 
 props inside componentdidmount are empty
   -when components are first mounted - props are not loaded 
 
+
 figure out how to get head signs from shitty data
   -just take the last element in trip array to find the final destination
+
 
 why first station doesn't have departures?
   -arrival time and departure times are identical at all stations except at initial stations where it will 
   have one or the other only.
   -time on the station = arrival || departure
 
+
 how to re-render favorite button in flatlist of countdownclocks 
   -extraData prop
+
+back end caching
+
+//NOT DONE ----------------
+
+error on one feed req means having to request all 
+
+offline support - what level to put "saveState action"
+option 1: baked into every fetch
+  *what happens on startup with parallel fetches? - could end up overwriting eachother
+    *sol: have separate states for weather and schedule
+option 2: manually call 
+  *not as clean
+
+text alignment issue with different font sizes - there's some invisible padding 
 
 searchbar not focusing after first render
 
 https back end
-back end caching
 
-scaling 
+scaling - need to use flexbox to make everything fit - will have to make home page scrollview 
+
+clean up error handling

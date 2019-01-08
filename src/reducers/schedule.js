@@ -1,18 +1,30 @@
 import {
 	SCHEDULE_REQUEST,
 	SCHEDULE_RECEIVE,
-	SCHEDULE_DENY
+	SCHEDULE_ERROR,
+	OFFLINE_SAVE,
+	OFFLINE_SAVED
 } from '../actions/schedule'
 
 const initialState = {
 	isFetching: false,
-	schedule: [],
+	schedule: null,
 	lastUpdated: null,
 	error: null,
+	lastState: null
 }
 
 export default function (state = initialState, action) {
 	switch (action.type) {
+		case OFFLINE_SAVE:
+			return {
+				...state,
+			}
+		case OFFLINE_SAVED:
+			return {
+				...state,
+				lastState: action.lastState,
+			}
 		case SCHEDULE_REQUEST:
 			return {
 				...state,
@@ -26,11 +38,14 @@ export default function (state = initialState, action) {
 				error: null,
 				isFetching: false
 			}
-		case SCHEDULE_DENY:
+		case SCHEDULE_ERROR:
 			return {
 				...state,
-				error: action.err,
-				isFetching: false
+				isFetching: false,
+				error: {
+					...state.error,
+					...action.error
+				}
 			}
 		default:
 			return state;

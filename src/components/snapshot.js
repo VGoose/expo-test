@@ -64,8 +64,8 @@ export const Snapshot = ({ time, precipProb, iconCode, temp, isF, apparentTemper
         </View>
     )
 }
-export const CurrentSnapshot = ({ currentForecast }) => {
-    const { precipProbability, iconCode, temperature, isF, apparentTemperature, summary } = currentForecast
+export const CurrentSnapshot = ({ currentForecast, isF }) => {
+    const { precipProbability, iconCode, temperature, apparentTemperature, summary } = currentForecast
     const unit = isF ? 'F' : 'C'
     const temp = Math.round(temperature)
     const apTemp = Math.round(apparentTemperature)

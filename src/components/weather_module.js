@@ -4,11 +4,11 @@ import { Text, View, StyleSheet, ScrollView } from 'react-native'
 import { Snapshot, CurrentSnapshot } from './snapshot'
 import { padding, margin, fonts, colors } from '../styles/base'
 
-const WeatherModule = ({ isFetching, weatherError, ...rest }) => {
+const WeatherModule = ({ isFetching, weatherError, city, ...rest }) => {
     return (
         weatherError
             ? <View style={styles.container}>
-                <Bar />
+                <Bar city={city}/>
                 <View style={styles.errorContainer}>
                     <Text style={styles.errorText}>We're having network issues.  Please try again later.</Text>
                 </View>
@@ -16,7 +16,7 @@ const WeatherModule = ({ isFetching, weatherError, ...rest }) => {
             : isFetching
                 ? <View style={styles.container}><Bar /></View>
                 : <View style={styles.container}>
-                    <Bar />
+                    <Bar city={city}/>
                     <SnapshotList data={rest} />
                 </View>
     )
@@ -36,11 +36,11 @@ const SnapshotList = ({ data }) => {
             iconCode={f.icon}
             temp={temp}
             apparentTemperature={apparentTemperature}
-            isF={isF}
         />
     })
     const currentSnap = <CurrentSnapshot
         key={'now'}
+        isF={isF}
         currentForecast={currentForecast}
     />
 
@@ -52,9 +52,10 @@ const SnapshotList = ({ data }) => {
         </View>
     )
 }
-const Bar = () => {
+const Bar = ({ city }) => {
     return (
         <View style={styles.barContainer}>
+            <Text style={styles.barText}>{city}</Text>
             <Text style={styles.barText}>Powered By Dark Sky</Text>
         </View>
     )
@@ -76,7 +77,8 @@ const styles = StyleSheet.create({
         // backgroundColor: 'yellow',
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
+
         height: 30,
         padding: padding.xs,
         borderTopLeftRadius: 5,

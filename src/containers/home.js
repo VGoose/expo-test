@@ -14,17 +14,19 @@ const mapStateToProps = (state) => {
     userError: state.user.error,
     userLocation: state.user.location,
 
-    scheduleData: state.schedule.schedule,
+    scheduleData: state.schedule.schedule || {},
     scheduleIsFetching: state.schedule.isFetching,
     scheduleError: state.schedule.error,
 
-    currentForecast: state.weather.currentForecast,
-    hourlyForecast: state.weather.hourlyForecast,
+
+    currentForecast: state.weather.currentForecast || [],
+    hourlyForecast: state.weather.hourlyForecast || [],
     forecastLocation: state.weather.forecastLocation,
     weatherIsFetching: state.weather.isFetching,
     //TODO give user toggle ability
     isF: state.weather.isF,
     weatherError: state.weather.error,
+    weatherOfflineState: state.weather.lastState,
   }
 }
 const mapDispatchToProps = (dispatch) => {

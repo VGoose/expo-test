@@ -5,7 +5,7 @@ import Swiper from 'react-native-swiper'
 import CountdownClock from './countdown_clock'
 import { padding, fonts, colors, margin } from '../styles/base'
 
-const TransitModule = ({ scheduleData, isFetching, favoriteStations, nearbyStations, toggleFavorite, fetchSchedule }) => {
+const TransitModule = ({ scheduleData = {}, isFetching, favoriteStations, nearbyStations, toggleFavorite, fetchSchedule }) => {
   let northSchedule, southSchedule
   const _isFav = (id) => {
     return favoriteStations.some((station) => id === station.stop_id)

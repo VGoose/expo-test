@@ -16,11 +16,12 @@ const initialState = {
     error: null,
     isFetching: false,
     favoriteStations: [],
-    isLocationEnabled: null
+    isLocationEnabled: null,
 };
 
 export default function (state = initialState, action) {
     switch (action.type) {
+
         case PERMISSION_RECEIVE: 
             return {
                 ...state,
@@ -37,7 +38,7 @@ export default function (state = initialState, action) {
                 isLocating: false,
                 location: {
                     lat: action.lat,
-                    lon: action.lon
+                    lon: action.lon,
                 } 
             }
             case USER_ERROR: 

@@ -1,23 +1,35 @@
 import { weatherTypes } from '../actions/weather'
 
-const { 
+const {
   WEATHER_REQUEST,
   WEATHER_RECEIVE,
-  WEATHER_ERROR
+  WEATHER_ERROR,
+  OFFLINE_SAVE,
+  OFFLINE_SAVED,
 } = weatherTypes
 
 const initialState = {
   isFetching: false,
-  currentForecast: {},
-  hourlyForecast: [],
+  currentForecast: null,
+  hourlyForecast: null,
   forecastLocation: '',
   lastUpdated: null,
   isF: true,
-  error: null
+  error: null,
+  lastState: null,
 }
-export default function(state = initialState, action) {
-  switch(action.type) {
-    case WEATHER_REQUEST: 
+export default function (state = initialState, action) {
+  switch (action.type) {
+    case OFFLINE_SAVE:
+      return {
+        ...state,
+      }
+    case OFFLINE_SAVED:
+      return {
+        ...state,
+        lastState: action.lastState,
+      }
+    case WEATHER_REQUEST:
       return {
         ...state,
         isFetching: true
@@ -31,13 +43,16 @@ export default function(state = initialState, action) {
         lastUpdated: Date.now(),
         isFetching: false,
       }
-    case WEATHER_ERROR: 
+    case WEATHER_ERROR:
       return {
         ...state,
-        error: action.error,
         isFetching: false,
+        error: {
+          ...state.error,
+          ...action.error
+        }
       }
-    default: 
+    default:
       return state
   }
 }

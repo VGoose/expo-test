@@ -1,9 +1,47 @@
 import axios from '../utils/axios'
+import { AsyncStorage } from 'react-native'
 
 export const SCHEDULE_REQUEST = 'SCHEDULE_REQUEST'
 export const SCHEDULE_RECEIVE = 'SCHEDULE_RECEIVE'
-export const SCHEDULE_DENY = 'SCHEDULE_DENY'
+export const SCHEDULE_ERROR = 'SCHEDULE_ERROR'
+export const OFFLINE_SAVE = 'SCHEDULE_OFFLINE_SAVE'
+export const OFFLINE_SAVED = 'SCHEDULE_OFFLINE_SAVED'
 
+export const getLastSchedule = () => dispatch => {
+    AsyncStorage.getItem('scheduleLastState')
+        .then(state => {
+            dispatch(offlineSaved(state))
+            dispatch(scheduleReceive(JSON.parse(state)))
+        })
+}
+const offlineSave = () => {
+    return {
+        type: OFFLINE_SAVE
+    }
+}
+
+const offlineSaved = (result) => {
+    return {
+        type: OFFLINE_SAVED,
+        lastState: JSON.parse(result)
+    }
+}
+const offlineSaveError = (error) => {
+    return {
+        type: SCHEDULE_ERROR,
+        error: {
+            offlineSaveError: error
+        }
+    }
+}
+
+const saveScheduleState = (state) => dispatch => {
+    dispatch(offlineSave())
+    AsyncStorage.setItem('scheduleLastState', JSON.stringify(state))
+        .then(() => AsyncStorage.getItem('scheduleLastState'))
+        .then(result => dispatch(offlineSaved(result)))
+        .catch(error => dispatch(offlineSaveError(error)))
+}
 const scheduleRequest = () => {
     return {
         type: SCHEDULE_REQUEST
@@ -19,15 +57,20 @@ const scheduleReceive = (data) => {
 }
 const scheduleDeny = (err) => {
     return {
-        type: SCHEDULE_DENY,
-        err
+        type: SCHEDULE_ERROR,
+        error: {
+            networkError: err
+        }
     }
 }
 const scheduleFetch = () => (dispatch, getState) => {
     dispatch(scheduleRequest())
     axios.get(`/api/schedule/`)
         .then(
-            res => dispatch(scheduleReceive(res.data)),
+            res => {
+                dispatch(scheduleReceive(res.data))
+                dispatch(saveScheduleState(res.data))
+            },
             err => dispatch(scheduleDeny(err))
         )
 }

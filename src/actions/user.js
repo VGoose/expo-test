@@ -3,7 +3,6 @@
 import { AsyncStorage } from 'react-native'
 import { Location, Permissions } from 'expo'
 import STATIONS from '../static/stations.json'
-import axios from '../utils/axios'
 import { diff, getEuclideanDist } from '../utils/helpers'
 
 import { fetchWeatherIfNeeded } from './weather'
@@ -17,8 +16,38 @@ export const userTypes = {
 	USER_LOCATE: 'USER_LOCATE',
 	USER_LOCATED: 'USER_LOCATED',
 	USER_ERROR: 'USER_ERROR',
+	OFFLINE_SAVE: 'OFFLINE_SAVE',
+	OFFLINE_SAVED: 'OFFLINE_SAVED'
+}
+const offlineSave = () => {
+	return {
+		type: userTypes.OFFLINE_SAVE
+	}
 }
 
+const offlineSaved = (result) => {
+	return {
+		type: userTypes.OFFLINE_SAVED,
+		lastState: result
+	}
+}
+
+const offlineSaveError = (error) => {
+	return {
+		type: userTypes.USER_ERROR,
+		error: {
+			offlineSaveErrorUser: error
+		}
+	}
+}
+
+export const saveUserState = (state) => dispatch => {
+	dispatch(offlineSave())
+	AsyncStorage.setItem('userLastState', JSON.stringify(state))
+		.then(() => AsyncStorage.getItem('userLastState'))
+		.then(result => dispatch(offlineSaved(result)))
+		.catch(error => dispatch(offlineSaveError(error)))
+}
 
 export const askLocationPermission = () => dispatch => {
 	Permissions.askAsync(Permissions.LOCATION)
@@ -83,7 +112,7 @@ export const userLocated = (lat, lon) => {
 	return {
 		type: userTypes.USER_LOCATED,
 		lat,
-		lon
+		lon,
 	}
 }
 
@@ -102,6 +131,7 @@ export const locateUser = () => (dispatch, getState) => {
 	}
 	return Location.getCurrentPositionAsync({ enableHighAccuracy: false })
 }
+
 const userRequest = () => {
 	return {
 		type: userTypes.USER_REQUEST,
@@ -179,7 +209,7 @@ const userPostData = (data) => dispatch => {
 	//TODO: generalize posting data for all type of data
 	AsyncStorage.setItem('favoriteStations', JSON.stringify(data))
 		.then(() => AsyncStorage.getItem('favoriteStations'))
-		.then(result => console.log(data.length) || dispatch(userReceive({'favoriteStations': JSON.parse(result)})))
+		.then(result => console.log(data.length) || dispatch(userReceive({ 'favoriteStations': JSON.parse(result) })))
 		.catch(error => dispatch(userDenied()))
 }
 
@@ -198,4 +228,3 @@ const shouldUserPost = (state) => {
 	}
 	return true
 }
-
