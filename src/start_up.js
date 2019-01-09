@@ -16,6 +16,7 @@ async function offlineFetch() {
 	store.dispatch(getLastWeather())
 }
 
+
 export default startUpFetch = () => {
 	//to prevent race condition where offline data
 	//overwrites freshly fetched data
@@ -33,10 +34,6 @@ export default startUpFetch = () => {
 					}
 					)
 					.catch(err => store.dispatch(locateError(err)))
-				AsyncStorage.getItem('weatherLastState')
-					.then(state => console.log('weather: ' + JSON.parse(state).city))
-				AsyncStorage.getItem('scheduleLastState')
-					.then(state => console.log('schedule: ' + JSON.parse(state).city))
 			}
 		)
 
