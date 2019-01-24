@@ -10,7 +10,7 @@ import Time from './reusable/time';
 
 import STATIONS from '../static/stations.json';
 
-const CountdownClock = ({ isFav, name, schedules, favorite, id, fetchSchedule, isFetching, onPressItem }) => {
+const CountdownClock = ({ isFav, name, schedules = {}, favorite, id, fetchSchedule, isFetching, onPressItem }) => {
   //handle 'stations' that serve no trains
   if (STATIONS[id].trains.length === 0) {
     return null
@@ -43,7 +43,7 @@ const Star = ({ favorite, id, isFav }) => {
         activeOpacity={0.0}
         onPress={() => favorite(id)}
         style={styles.starred}>
-        <Ionicons name='ios-star' size={25} />
+        <Image source={require('../assets/icons/pin_a.png')} />
 
       </TouchableHighlight>
 
@@ -51,7 +51,7 @@ const Star = ({ favorite, id, isFav }) => {
         underlayColor='transparent'
         activeOpacity={0.0}
         onPress={() => favorite(id)}>
-        <Ionicons name='ios-star-outline' size={25} />
+        <Image source={require('../assets/icons/pin.png')} />
       </TouchableHighlight>
   )
 }
@@ -178,27 +178,21 @@ const Bar = ({ toggle, name, badges, isFav, favorite, id, fetchSchedule }) => {
   </View>
   { children }
 }
-
-
-
-
 const { fullWidth, fullHeight } = dimensions
 
 const styles = StyleSheet.create({
   countdownClock: {
-    backgroundColor: colors.grey,
-    margin: margin.sm,
-    marginLeft: 0,
-    marginRight: 0,
+    backgroundColor: colors.white,
+    marginBottom: margin.xs,
     borderRadius: 5,
     height: 140,
   },
   countdownClock_Collapsed: {
-    backgroundColor: colors.grey,
-    margin: margin.sm,
-    marginLeft: 0,
-    marginRight: 0,
-    borderRadius: 5,
+    backgroundColor: colors.white,
+
+    borderColor: colors.darkGrey,
+    marginBottom: margin.xs,
+
   },
   countdownClock_Bar: {
     // backgroundColor: 'blue',
@@ -208,7 +202,7 @@ const styles = StyleSheet.create({
     height: 50,
   },
   countdownClock_Touchable: {
-    flex: 9,
+    flex: 12,
     justifyContent: 'center',
   },
   countdownClock_Touchable_Container: {
@@ -264,9 +258,9 @@ const styles = StyleSheet.create({
 
   },
   badge: {
-    borderRadius: 12,
-    width: 24,
-    height: 24,
+    borderRadius: 11,
+    width: 22,
+    height: 22,
     textAlign: 'center',
     alignItems: 'center',
     justifyContent: 'center',

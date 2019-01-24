@@ -1,54 +1,56 @@
 "use strict";
 import React from 'react'
-import { } from 'react-native'
+import { Image } from 'react-native'
 import { createBottomTabNavigator, createAppContainer } from "react-navigation"
-import { Ionicons, FontAwesome } from '@expo/vector-icons'
+import { connect } from 'react-redux'
 
 import Home from './containers/home'
 import Transit from './containers/transit'
-import WeatherScreen from './components/weather_screen'
-import SettingsScreen from './components/settings_screen'
+import SettingScreen from './components/settings_screen'
 
 const AppNavigator = createBottomTabNavigator(
   {
     Home: {
       screen: Home
     },
+    Settings: {
+      screen: SettingScreen
+    },
     Transit: {
       screen: Transit
-    },
-    Weather: {
-      screen: WeatherScreen
-    },
-    Settings: {
-      screen: SettingsScreen
     }
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
-        let iconName;
+        let icon
         if (routeName === 'Home') {
-          iconName = `newspaper-o`;
-          return <FontAwesome name={iconName} size={horizontal ? 20 : 25} color={tintColor} />;
+          icon = focused
+            ? require('./assets/icons/home_a.png')
+            : require('./assets/icons/home.png')
+          return <Image source={icon} />
         } else if (routeName === 'Settings') {
-          iconName = `ios-settings`;
-          return <Ionicons name={iconName} size={horizontal ? 20 : 25} color={tintColor} />;
+          icon = focused
+            ? require('./assets/icons/setting_a.png')
+            : require('./assets/icons/setting.png')
+          return <Image source={icon} />
         } else if (routeName === 'Transit') {
-          iconName = `md-train`;
-          return <Ionicons name={iconName} size={horizontal ? 20 : 25} color={tintColor} />;
-        } else if (routeName === 'Weather') {
-          iconName = `ios-rainy`;
-          return <Ionicons name={iconName} size={horizontal ? 20 : 25} color={tintColor} />;
-        }
+          icon = focused
+            ? require('./assets/icons/train_a.png')
+            : require('./assets/icons/train.png')
+          return <Image source={icon} />
 
-        // You can return any component that you like here! We usually use an
-        // icon component from react-native-vector-icons
+        } else if (routeName === 'Weather') {
+          icon = focused
+            ? require('./assets/icons/weather_a.png')
+            : require('./assets/icons/weather.png')
+          return <Image source={icon} />
+        }
       },
     }),
     tabBarOptions: {
-      activeTintColor: 'rgb(0, 122, 255)',
+      activeTintColor: 'black',
       inactiveTintColor: 'gray',
     },
   }

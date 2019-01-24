@@ -11,8 +11,8 @@ const TopBar = ({ page }) => {
       <Time>
         {({ getTimeHHMM, time, day, month }) => (
           <View style={styles.timeContainer}>
-            <Text style={styles.timeText}>{`${getTimeHHMM()}`}</Text>
-            <Text style={styles.dayText}>{`${day} ${month} ${time.getDate()}`}</Text>
+            {/* <Text style={styles.timeText}>{`${getTimeHHMM()}`}</Text> */}
+            <Text style={styles.dayText}>{`${day.toUpperCase()} ${month.toUpperCase()} ${time.getDate()}`}</Text>
           </View>
         )}
       </Time>
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     paddingRight: padding.sm,
   },
   pageName: {
-    fontSize: fonts.lg,
+    fontSize: fonts.xl,
     paddingBottom: padding.sm
   },
   timeContainer: {
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
   dayText: {
     textAlign: 'center',
-    fontSize: fonts.sm,
+    fontSize: fonts.lg,
     paddingBottom: padding.sm
   },
   timeText: {

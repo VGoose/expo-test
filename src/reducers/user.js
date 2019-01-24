@@ -6,23 +6,36 @@ const {
     USER_ERROR,
     USER_LOCATE,
     USER_LOCATED,
+    SETTING_CELSIUS,
+    SETTING_NEARBY,
 } = userTypes
 
 const initialState = {
     isAskingPermission: false,
     location: null,
     isLocating: false,
-    nearbyStations: [], 
+    nearbyStations: [],
     error: null,
     isFetching: false,
     favoriteStations: [],
     isLocationEnabled: null,
+    isCelsius: false,
+    isNearby: false,
 };
 
 export default function (state = initialState, action) {
     switch (action.type) {
-
-        case PERMISSION_RECEIVE: 
+        case SETTING_CELSIUS:
+            return {
+                ...state,
+                isCelsius: action.setting
+            }
+        case SETTING_NEARBY:
+            return {
+                ...state,
+                isNearby: action.setting
+            }
+        case PERMISSION_RECEIVE:
             return {
                 ...state,
                 isLocationEnabled: action.status
@@ -39,9 +52,9 @@ export default function (state = initialState, action) {
                 location: {
                     lat: action.lat,
                     lon: action.lon,
-                } 
+                }
             }
-            case USER_ERROR: 
+        case USER_ERROR:
             return {
                 ...state,
                 error: {
@@ -55,6 +68,8 @@ export default function (state = initialState, action) {
                 userIsFetching: true
             }
         case USER_RECEIVE:
+            console.log('user receive: ')
+            console.log(action.data)
             return {
                 ...state,
                 ...action.data,

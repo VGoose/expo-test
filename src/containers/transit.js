@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
     userIsFetching: state.user.isFetching,
     userError: state.user.error,
 
-    scheduleData: state.schedule.schedule,
+    scheduleData: state.schedule.schedule || {},
     scheduleIsFetching: state.schedule.isFetching,
     scheduleError: state.schedule.error,
   }

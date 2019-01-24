@@ -21,16 +21,16 @@ how to re-render favorite button in flatlist of countdownclocks
 
 back end caching
 
-//NOT DONE ----------------
-
-error on one feed req means having to request all 
-
 offline support - what level to put "saveState action"
 option 1: baked into every fetch
   *what happens on startup with parallel fetches? - could end up overwriting eachother
     *sol: have separate states for weather and schedule
 option 2: manually call 
   *not as clean
+
+//NOT DONE ----------------
+
+error on one feed req means having to request all 
 
 text alignment issue with different font sizes - there's some invisible padding 
 

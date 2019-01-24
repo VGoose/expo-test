@@ -1,6 +1,6 @@
 "use strict";
 import React from 'react'
-import { AppState, StyleSheet, AsyncStorage } from 'react-native'
+import { AppState, StyleSheet, ActivityIndicator } from 'react-native'
 import store from './store'
 import { Provider } from 'react-redux'
 import { connect } from 'react-redux'
@@ -23,9 +23,9 @@ export default class OnePageApp extends React.Component {
   }
   render() {
     return (
-        <Provider store={store}>
-          <AppNav />
-        </Provider>
+      <Provider store={store}>
+        <AppNav />
+      </Provider>
 
     )
   }

@@ -48,20 +48,17 @@ export const fetchWeatherIfNeeded = () => (dispatch, getState) => {
   const { lat, lon } = getState().user.location
   shouldWeatherFetch(getState()) 
     ? dispatch(getWeather(lat, lon))
-    : null
+    : console.log('no fetch') || null
 }
 const shouldWeatherFetch = (state) => {
-  const { isFetching, lastUpdated } = state.weather
-  if(!lastUpdated) {
-    return true
-  }
-  if (isFetching) {
-    return false 
-  }
   const secondsSinceLastUpdate = (lastUpdated - Date.now()) * 1000
-  if (secondsSinceLastUpdate < 30) { 
-    return false
+  const { isFetching, lastUpdated } = state.weather
+  
+  if (isFetching || secondsSinceLastUpdate < 30) {
+    console.log('no fetch')
+    return false 
   }else {
+    console.log('yes fetch')
     return true
   }
 }

@@ -17,7 +17,16 @@ export const userTypes = {
 	USER_LOCATED: 'USER_LOCATED',
 	USER_ERROR: 'USER_ERROR',
 	OFFLINE_SAVE: 'OFFLINE_SAVE',
-	OFFLINE_SAVED: 'OFFLINE_SAVED'
+	OFFLINE_SAVED: 'OFFLINE_SAVED',
+	SETTING_CELSIUS: 'SETTING_CELSIUS',
+	SETTING_NEARBY: 'SETTING_NEARBY',
+}
+
+export const toggleCelsius = (setting) => dispatch => {
+	dispatch(userUpdateData('isCelsius', JSON.stringify(setting)))
+}
+export const toggleNearby = (setting) => dispatch => {
+	dispatch(userUpdateData('isNearby', JSON.stringify(setting)))
 }
 const offlineSave = () => {
 	return {
@@ -166,7 +175,7 @@ export const userToggleFavorite = (id) => (dispatch, getState) => {
 		//add to favorites
 		data = [...getState().user.favoriteStations, stationObj]
 	}
-	dispatch(userUpdateData(data))
+	dispatch(userUpdateData('favoriteStations', data))
 }
 
 export const fetchUserIfNeeded = () => (dispatch, getState) => {
@@ -177,7 +186,7 @@ export const fetchUserIfNeeded = () => (dispatch, getState) => {
 
 const userFetch = () => dispatch => {
 	dispatch(userRequest())
-	AsyncStorage.multiGet(['favoriteStations'])
+	AsyncStorage.multiGet(['favoriteStations', 'isCelsius', 'isNearby'])
 		.then(resultsArr => {
 			return new Promise(
 				(resolve, reject) => {
@@ -188,7 +197,12 @@ const userFetch = () => dispatch => {
 						}
 						//in case v is not json string but plain string
 						try {
-							data[k] = JSON.parse(v)
+							let _v = JSON.parse(v)
+							//parsing boolean string
+							if(_v === 'false' || _v === 'true') {
+								_v = _v === 'true'
+							}
+							data[k] = _v
 						} catch {
 							data[k] = v
 						}
@@ -199,17 +213,22 @@ const userFetch = () => dispatch => {
 		.then(data => dispatch(userReceive(data)))
 		.catch(err => dispatch(userDenied(err)))
 }
-const userUpdateData = (data) => (dispatch, getState) => {
+const userUpdateData = (key, data) => (dispatch, getState) => {
 	if (shouldUserPost(getState())) {
 		dispatch(userRequest())
-		dispatch(userPostData(data))
+		dispatch(userPostData(key, data))
 	}
 }
-const userPostData = (data) => dispatch => {
-	//TODO: generalize posting data for all type of data
-	AsyncStorage.setItem('favoriteStations', JSON.stringify(data))
-		.then(() => AsyncStorage.getItem('favoriteStations'))
-		.then(result => console.log(data.length) || dispatch(userReceive({ 'favoriteStations': JSON.parse(result) })))
+const userPostData = (key, data) => dispatch => {
+	AsyncStorage.setItem(key, JSON.stringify(data))
+		.then(() => AsyncStorage.getItem(key))
+		.then(result => {
+			let _result = JSON.parse(result)
+			if(_result === 'false' || _result === 'true') {
+				_result = _result === 'true'
+			}
+			dispatch(userReceive({ [key]: _result}))
+		})
 		.catch(error => dispatch(userDenied()))
 }
 

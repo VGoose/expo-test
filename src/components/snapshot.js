@@ -1,21 +1,41 @@
 import React from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, Image } from 'react-native'
 
 import { padding, fonts, margin, colors } from '../styles/base'
 
 const WeatherIcon = (iconCode) => {
-    let name
-    switch (iconCode) {
+    let icon
+    switch (iconCode.iconCode) {
         case 'clear-day':
+            icon = <Image source={require('../assets/icons/sun.png')} />
+            break
         case 'clear-night':
+            icon = <Image source={require('../assets/icons/night.png')} />
+            break
         case 'rain':
+            icon = <Image source={require('../assets/icons/rain.png')} />
+            break
         case 'snow':
+            icon = <Image source={require('../assets/icons/snow.png')} />
+            break
         case 'sleet':
+            icon = <Image source={require('../assets/icons/sleet.png')} />
+            break
         case 'wind':
+            icon = <Image source={require('../assets/icons/wind.png')} />
+            break
         case 'fog':
+            icon = <Image source={require('../assets/icons/fog.png')} />
+            break
         case 'cloudy':
+            icon = <Image source={require('../assets/icons/cloud.png')} />
+            break
         case 'partly-cloudy-day':
+            icon = <Image source={require('../assets/icons/partly_cloudy.png')} />
+            break
         case 'partly-cloudy-night':
+            icon = <Image source={require('../assets/icons/cloudy_night.png')} />
+            break
         default: icon = 'TODO'
     }
     return <Text>{icon}</Text>
@@ -29,8 +49,10 @@ const PrecipProb = ({ precipProb }) => {
         )
     }
 }
-const Temp = ({ temp, apTemp }) => {
-    return <Text style={styles.tempDescNum}>{`${temp} | ${apTemp}`}</Text>
+const Temp = ({ temp, apTemp, isCelsius }) => {
+    const _temp = isCelsius ? Math.round((temp - 32) * 5 / 9) : Math.round(temp)
+    const _apTemp = isCelsius ? Math.round((apTemp - 32) * 5 / 9) : Math.round(apTemp)
+    return <Text style={styles.tempDescNum}>{`${_temp}   ${_apTemp}`}</Text>
 }
 const Time = ({ time }) => {
     const hour = time.getHours()
@@ -46,7 +68,7 @@ const Time = ({ time }) => {
     }
     return <Text style={styles.timeText}>{disp}</Text>
 }
-export const Snapshot = ({ time, precipProb, iconCode, temp, isF, apparentTemperature }) => {
+export const Snapshot = ({ time, precipProb, iconCode, temp, isCelsius, apparentTemperature }) => {
     return (
         <View style={styles.hourlyContainer}>
             <View style={styles.timePrecipContainer}>
@@ -59,16 +81,17 @@ export const Snapshot = ({ time, precipProb, iconCode, temp, isF, apparentTemper
                 <WeatherIcon iconCode={iconCode} />
             </View>
             <View style={styles.tempContainer}>
-                <Temp temp={temp} apTemp={apparentTemperature} />
+                <Temp temp={temp} isCelsius={isCelsius} apTemp={apparentTemperature} />
             </View>
         </View>
     )
 }
-export const CurrentSnapshot = ({ currentForecast, isF }) => {
-    const { precipProbability, iconCode, temperature, apparentTemperature, summary } = currentForecast
-    const unit = isF ? 'F' : 'C'
-    const temp = Math.round(temperature)
-    const apTemp = Math.round(apparentTemperature)
+export const CurrentSnapshot = ({ currentForecast, isCelsius }) => {
+    const { precipProbability, icon, temperature, apparentTemperature, summary } = currentForecast
+    const unit = isCelsius ? 'C' : 'F'
+    const temp = isCelsius ? Math.round((temperature - 32) * 5 / 9) : Math.round(temperature)
+    const apTemp = isCelsius ? Math.round((apparentTemperature - 32) * 5 / 9) : Math.round(apparentTemperature)
+    console.log('current snap: ' + icon)
     return (
         <View style={styles.currentContainer}>
             <View style={styles.timePrecipContainer}>
@@ -76,7 +99,7 @@ export const CurrentSnapshot = ({ currentForecast, isF }) => {
                 <PrecipProb precipProb={precipProbability} />
             </View>
             <View style={styles.iconContainer}>
-                <WeatherIcon iconCode={iconCode} />
+                <WeatherIcon iconCode={icon} />
             </View>
             <View style={styles.tempContainer}>
                 <View style={styles.tempDescContainer}>
@@ -91,7 +114,7 @@ export const CurrentSnapshot = ({ currentForecast, isF }) => {
                         <Text style={styles.tempDescNum}>{`${apTemp}`}</Text>
                         <Text style={styles.tempDescUnit}>{`${unit}`}</Text>
                     </View>
-                    <Text style={styles.tempDescText}>Feels</Text>
+                    <Text style={styles.tempDescText}>Feels Like</Text>
                 </View>
             </View>
         </View>
@@ -146,7 +169,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     tempDescText: {
-        fontSize: fonts.sm,
+        fontSize: fonts.xs,
         textAlign: 'center'
     },
     tempNumContainer: {

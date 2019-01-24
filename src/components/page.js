@@ -11,6 +11,7 @@ const Page = ({ children, pageName }) => {
         <TopBar page={pageName} />
         {children}
       </View>
+      
     </SafeAreaView>
   )
 }

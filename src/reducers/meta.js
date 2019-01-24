@@ -1,16 +1,26 @@
-import {
+import { metaTypes } from '../actions/meta'
+
+const {
   CONNECTION_GET,
   CONNECTION_RECEIVE,
-} from '../actions/meta'
+  START_UP_DONE,
+} = metaTypes
 
 const initialState = {
   isFetching: false,
   connectionType: null,
-  effectiveType: null
+  effectiveType: null,
+  showSpinner: true,
 }
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case START_UP_DONE: {
+      return {
+        ...state,
+        showSpinner: false,
+      }
+    }
     case CONNECTION_GET:
       return {
         ...state,

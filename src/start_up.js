@@ -1,7 +1,9 @@
 import { AsyncStorage } from 'react-native'
 import store from './store'
+import { showSpinner, hideSpinner } from './actions/meta'
 import { fetchWeatherIfNeeded, getLastWeather } from './actions/weather'
 import { fetchScheduleIfNeeded, getLastSchedule } from './actions/schedule'
+import { checkConnection } from './actions/meta'
 import {
 	locateUser,
 	userLocated,
@@ -18,6 +20,7 @@ async function offlineFetch() {
 
 
 export default startUpFetch = () => {
+	store.dispatch(checkConnection())
 	//to prevent race condition where offline data
 	//overwrites freshly fetched data
 	offlineFetch()
@@ -36,7 +39,4 @@ export default startUpFetch = () => {
 					.catch(err => store.dispatch(locateError(err)))
 			}
 		)
-
-
-
 }
