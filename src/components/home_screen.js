@@ -12,6 +12,7 @@ import { colors, fonts } from '../styles/base'
 const HomeScreen = ({
   //meta
   metaConnectionType,
+  showSpinner,
 
   //user props
   favoriteStations = [],
@@ -36,7 +37,7 @@ const HomeScreen = ({
   weatherError,
   fetchWeather,
 }) => {
-  if (userIsFetching) {
+  if (userIsFetching || showSpinner) {
     return <View></View>
   }
   return (
@@ -47,7 +48,7 @@ const HomeScreen = ({
             contentContainerStyle={{...styles.container, backgroundColor: metaConnectionType === 'none' ? colors.darkGrey : colors.grey}}
             refreshControl={
               <RefreshControl
-                refreshing={weatherIsFetching || scheduleIsFetching}
+                refreshing={false}
                 onRefresh={() => { fetchSchedule(), fetchWeather() }}
               />
             }

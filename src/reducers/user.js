@@ -68,8 +68,6 @@ export default function (state = initialState, action) {
                 userIsFetching: true
             }
         case USER_RECEIVE:
-            console.log('user receive: ')
-            console.log(action.data)
             return {
                 ...state,
                 ...action.data,

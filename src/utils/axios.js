@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const _axios = axios.create({
-    baseURL: 'http://localhost:5000',
+    baseURL: 'https://www.server.alecvo.com/.netlify/functions/gogonow/',
     withCredentials: true,
 })
 

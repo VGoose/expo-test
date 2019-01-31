@@ -59,7 +59,7 @@ export const saveUserState = (state) => dispatch => {
 }
 
 export const askLocationPermission = () => dispatch => {
-	Permissions.askAsync(Permissions.LOCATION)
+	return Permissions.askAsync(Permissions.LOCATION)
 		.then(
 			({ status }) => status === 'granted'
 				? dispatch(receivePermission(true))
@@ -180,13 +180,13 @@ export const userToggleFavorite = (id) => (dispatch, getState) => {
 
 export const fetchUserIfNeeded = () => (dispatch, getState) => {
 	if (shouldUserFetch(getState())) {
-		dispatch(userFetch())
+		return dispatch(userFetch())
 	}
 }
 
 const userFetch = () => dispatch => {
 	dispatch(userRequest())
-	AsyncStorage.multiGet(['favoriteStations', 'isCelsius', 'isNearby'])
+	return AsyncStorage.multiGet(['favoriteStations', 'isCelsius', 'isNearby'])
 		.then(resultsArr => {
 			return new Promise(
 				(resolve, reject) => {

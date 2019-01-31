@@ -1,47 +1,124 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image, TouchableHighlight } from 'react-native'
-
-import { Ionicons, FontAwesome, Entypo } from '@expo/vector-icons'
+import { View, Text, StyleSheet, Image, TouchableHighlight, Animated, Easing } from 'react-native'
 
 import { dimensions, fonts, padding, margin, colors } from '../styles/base'
 
-import Toggle from './reusable/toggle';
 import Time from './reusable/time';
 
 import STATIONS from '../static/stations.json';
 
-const CountdownClock = ({ isFav, name, schedules = {}, favorite, id, fetchSchedule, isFetching, onPressItem }) => {
-  //handle 'stations' that serve no trains
-  if (STATIONS[id].trains.length === 0) {
-    return null
+class CountdownClock extends React.Component {
+
+  state = {
+    rowOpacity: new Animated.Value(0),
+    height: new Animated.Value(50),
+    opacity: new Animated.Value(0),
+    open: false
   }
-  let badges = STATIONS[id].trains
-    .map(train => <Badge key={train} train={train} />)
-  return (
-    <Toggle>
-      {({ show, toggle }) => {
-        return (
-          show
-            ? <View style={styles.countdownClock}>
-              <Bar toggle={toggle} name={name} badges={badges} isFav={isFav} favorite={favorite ? favorite : onPressItem} id={id} />
-              <RowList schedules={schedules} isFetching={isFetching} />
-            </View>
-            : <View style={styles.countdownClock_Collapsed}>
-              <Bar toggle={toggle} fetchSchedule={fetchSchedule} name={name} badges={badges} isFav={isFav} favorite={favorite ? favorite : onPressItem} id={id} />
-            </View>
-        )
-      }}
-    </Toggle>
-  )
+  componentDidMount() {
+    this.barFadeIn()
+  }
+
+  barFadeIn = () => Animated.timing(
+    this.state.opacity,
+    {
+      toValue: 1,
+      duration: 300
+    }
+  ).start()
+
+  barFadeOut = (remove) => Animated.timing(
+    this.state.opacity,
+    {
+      toValue: 0,
+      duration: 300
+    }
+  ).start(({ finished }) => finished ? remove() : null)
+
+  collapse = () => Animated.sequence([
+    Animated.timing(
+      this.state.rowOpacity,
+      {
+        toValue: 0,
+        duration: 200,
+        easing: Easing.linear
+      }
+    ),
+    Animated.timing(
+      this.state.height,
+      {
+        toValue: 50,
+        duration: 250
+      }
+    )
+  ]).start(({ finished }) => finished ? this.toggle() : null)
+
+  open = () => Animated.stagger(200, [
+    Animated.timing(
+      console.log('open called') ||
+      this.state.height,
+      {
+        toValue: 140,
+        duration: 250
+      }
+    ),
+    Animated.timing(
+      this.state.rowOpacity,
+      {
+        toValue: 1,
+        duration: 250,
+        easing: Easing.linear
+      }
+    )
+  ]).start(({ finished }) => finished ? this.toggle() : null)
+
+  toggle = () => {
+    this.setState({ open: !this.state.open })
+  }
+
+
+  render() {
+    const { isFav, name, schedules = {}, favorite, id, fetchSchedule, isFetching, onPressItem } = this.props
+    //handle 'stations' that serve no trains
+    if (STATIONS[id].trains.length === 0) {
+      return null
+    }
+    const badges = STATIONS[id].trains
+      .map(train => <Badge key={train} train={train} />)
+    const _schedules = schedules
+      .filter(schedule => new Date(schedule.time) - Date.now() > 0)
+      .sort((a, b) => new Date(a.time) - new Date(b.time))
+      .slice(0, 3)
+    return (
+      <Animated.View style={{ ...styles.countdownClock, height: this.state.height, opacity: this.state.opacity }}>
+        <Bar
+          toggle={() => this.state.open ? this.collapse() : this.open()}
+          fadeOut={this.barFadeOut}
+          name={name}
+          badges={badges}
+          isFav={isFav}
+          favorite={favorite ? favorite : onPressItem} id={id} />
+        {this.state.open
+          ? <AnimatedRowList animatedOpacity={this.state.rowOpacity}
+            schedules={_schedules}
+            isFetching={isFetching} />
+          : null}
+      </Animated.View>
+    )
+
+
+  }
 }
 
-const Star = ({ favorite, id, isFav }) => {
+const Star = ({ fadeOut, favorite, id, isFav }) => {
   return (
     isFav
       ? <TouchableHighlight
         underlayColor='transparent'
         activeOpacity={0.0}
-        onPress={() => favorite(id)}
+        onPress={() =>
+          fadeOut(() => favorite(id))
+        }
         style={styles.starred}>
         <Image source={require('../assets/icons/pin_a.png')} />
 
@@ -102,7 +179,7 @@ const Badge = ({ train, isRowBadge }) => {
   )
 }
 
-const Row = ({ schedule, index }) => {
+const Row = ({ animatedOpacity, schedule, index }) => {
   return (
     <Time>
       {({ time }) => {
@@ -110,8 +187,14 @@ const Row = ({ schedule, index }) => {
         let minutes = Math.floor(seconds / 60);
         let countdown = seconds > 60 ? minutes : seconds > 30 ? seconds : 'now';
         return (
-          <View
-            style={{ ...styles.row, backgroundColor: index % 2 !== 1 ? '#D5D9DA' : '#FFFFFF' }}
+          <Animated.View
+            style={{
+              ...styles.row,
+              opacity: animatedOpacity,
+              backgroundColor: index % 2 !== 1 ? '#D5D9DA' : '#FFFFFF',
+              borderBottomLeftRadius: index === 2 ? 5 : 0,
+              borderBottomRightRadius: index === 2 ? 5 : 0,
+            }}
           >
             <View style={styles.row_left}>
 
@@ -119,43 +202,44 @@ const Row = ({ schedule, index }) => {
               <Text style={styles.row_headsign}>{schedule.headsign}</Text>
             </View>
             <Text style={styles.row_time}>{countdown} {seconds > 60 ? 'min' : Number.isInteger(seconds) && seconds > 30 ? 'sec' : null}</Text>
-          </View>)
+          </Animated.View>)
       }}
     </Time>
   )
 }
-const RowList = ({ schedules, isFetching }) => {
+class AnimatedRowList extends React.Component {
   //TODO add spinner
-  if (isFetching) {
-    return <View style={styles.rowContainer}>
-      <Text>Loading...</Text>
-    </View>
+  render() {
+    const { isFetching, schedules } = this.props
+    if (isFetching) {
+      return <View style={styles.rowContainer}>
+        <Text>Loading...</Text>
+      </View>
+    }
+    let rows = schedules
+      .map((schedule, index) => (
+        <Row
+          animatedOpacity={this.props.animatedOpacity}
+          key={schedule.train + schedule.direction + schedule.time + index}
+          schedule={schedule}
+          index={index}
+        />
+      ))
+    return (
+      < View style={styles.rowContainer} >
+        {rows}
+      </View>
+    )
   }
-  return (
-    <Time>
-      {({ time }) => {
-        let rows = schedules
-          .filter(schedule => new Date(schedule.time) - time > 0)
-          .sort((a, b) => new Date(a.time) - new Date(b.time))
-          .map((schedule, index) => (
-            <Row key={schedule.train + schedule.direction + schedule.time} schedule={schedule} index={index} />
-          ))
-        return < View style={styles.rowContainer} >
-          {rows.slice(0, 3)}
-        </View>
-      }}
-    </Time>
-
-  )
 }
-const Bar = ({ toggle, name, badges, isFav, favorite, id, fetchSchedule }) => {
+const Bar = ({ fadeOut, toggle, name, badges, isFav, favorite, id, fetchSchedule }) => {
   //fetchSchedule only passed when clock in collapsed state, when closing fetchSchedule will just be 
   //a blank function
   fetchSchedule ? null : fetchSchedule = () => { }
   return <View style={styles.countdownClock_Bar}>
     <TouchableHighlight
       underlayColor={'transparent'}
-      activeOpacity={0.0}
+      activeOpacity={0.5}
       style={styles.countdownClock_Touchable}
       onPress={toggle}>
       <View style={styles.countdownClock_Touchable_Container}>
@@ -173,7 +257,7 @@ const Bar = ({ toggle, name, badges, isFav, favorite, id, fetchSchedule }) => {
       </View>
     </TouchableHighlight>
     <View style={styles.countdownClock_Bar_Star} >
-      <Star isFav={isFav} favorite={favorite} id={id} />
+      <Star isFav={isFav} fadeOut={fadeOut} favorite={favorite} id={id} />
     </View>
   </View>
   { children }
@@ -185,7 +269,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     marginBottom: margin.xs,
     borderRadius: 5,
-    height: 140,
+    // height: 140,
   },
   countdownClock_Collapsed: {
     backgroundColor: colors.white,
@@ -234,7 +318,7 @@ const styles = StyleSheet.create({
   },
   rowContainer: {
     flex: 1,
-    height: 90
+    height: 90,
   },
   row: {
     flex: 1,

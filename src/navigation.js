@@ -13,12 +13,12 @@ const AppNavigator = createBottomTabNavigator(
     Home: {
       screen: Home
     },
+    Transit: {
+      screen: Transit
+    },
     Settings: {
       screen: SettingScreen
     },
-    Transit: {
-      screen: Transit
-    }
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({

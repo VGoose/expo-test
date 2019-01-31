@@ -1,9 +1,7 @@
-import { AsyncStorage } from 'react-native'
 import store from './store'
-import { showSpinner, hideSpinner } from './actions/meta'
 import { fetchWeatherIfNeeded, getLastWeather } from './actions/weather'
 import { fetchScheduleIfNeeded, getLastSchedule } from './actions/schedule'
-import { checkConnection } from './actions/meta'
+import { checkConnection, hideSpinner } from './actions/meta'
 import {
 	locateUser,
 	userLocated,
@@ -13,30 +11,36 @@ import {
 } from './actions/user'
 
 //load offline data from async storage
-async function offlineFetch() {
-	store.dispatch(getLastSchedule())
-	store.dispatch(getLastWeather())
+function offlineFetch() {
+	return Promise.all([
+		store.dispatch(getLastSchedule()),
+		store.dispatch(getLastWeather())
+	])
 }
 
-
+function fetchData() {
+	return Promise.all([
+		store.dispatch(fetchScheduleIfNeeded()),
+		store.dispatch(askLocationPermission()),
+		store.dispatch(fetchUserIfNeeded()),
+		store.dispatch(locateUser())
+			.then(pos => {
+				store.dispatch(userLocated(pos.coords.latitude, pos.coords.longitude))
+				store.dispatch(fetchWeatherIfNeeded())
+				store.dispatch(setNearbyStations(0.5))
+			})
+			.catch(err => store.dispatch(locateError(err)))
+	])
+}
 export default startUpFetch = () => {
-	store.dispatch(checkConnection())
-	//to prevent race condition where offline data
-	//overwrites freshly fetched data
-	offlineFetch()
-		.then(
-			() => {
-				store.dispatch(fetchScheduleIfNeeded())
-				store.dispatch(askLocationPermission())
-				store.dispatch(fetchUserIfNeeded())
-				store.dispatch(locateUser())
-					.then(pos => {
-						store.dispatch(userLocated(pos.coords.latitude, pos.coords.longitude))
-						store.dispatch(fetchWeatherIfNeeded())
-						store.dispatch(setNearbyStations(0.5))
-					}
-					)
-					.catch(err => store.dispatch(locateError(err)))
+	checkConnection()
+		.then(() => {
+			if (store.getState().connectionType === 'none') {
+				return offlineFetch()
+			} else {
+				console.log('startUp fetching')
+				return fetchData()
 			}
-		)
+		})
+		.then(() => store.dispatch(hideSpinner()))
 }

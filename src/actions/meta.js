@@ -14,7 +14,7 @@ export const hideSpinner = () => {
 }
 
 //check connection
-export const checkConnection = () => dispatch => {
+export const checkConnection = async () => dispatch => {
   dispatch(getConnection())
 	NetInfo.getConnectionInfo()
 		.then(info => dispatch(receiveConnection(info)))

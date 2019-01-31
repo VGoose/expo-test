@@ -54,19 +54,19 @@ const Temp = ({ temp, apTemp, isCelsius }) => {
     const _apTemp = isCelsius ? Math.round((apTemp - 32) * 5 / 9) : Math.round(apTemp)
     return <Text style={styles.tempDescNum}>{`${_temp}   ${_apTemp}`}</Text>
 }
-const Time = ({ time }) => {
+const Time = ({ time, min }) => {
     const hour = time.getHours()
-    let disp
+    const _min = time.getMinutes()
+    let disp, sign
+    hour >= 12 ? sign = 'PM' : sign = 'AM'
     if (hour > 12) {
-        disp = `${hour - 12} PM`
-    } else if (hour === 0) {
-        disp = '12 AM'
-    } else if (hour === 12) {
-        disp = '12 PM'
+        disp = hour - 12
+    } else if(hour === 0) {
+        disp = 12
     } else {
-        disp = `${hour} AM`
+        disp = hour
     }
-    return <Text style={styles.timeText}>{disp}</Text>
+    return min ? <Text style={styles.timeText}>{disp}:{_min} {sign}</Text> : <Text style={styles.timeText}>{disp} {sign}</Text>
 }
 export const Snapshot = ({ time, precipProb, iconCode, temp, isCelsius, apparentTemperature }) => {
     return (
@@ -87,15 +87,15 @@ export const Snapshot = ({ time, precipProb, iconCode, temp, isCelsius, apparent
     )
 }
 export const CurrentSnapshot = ({ currentForecast, isCelsius }) => {
-    const { precipProbability, icon, temperature, apparentTemperature, summary } = currentForecast
+    const { precipProbability, icon, temperature, apparentTemperature, summary, time } = currentForecast
+    const _time = new Date(parseInt(time) * 1000)
     const unit = isCelsius ? 'C' : 'F'
     const temp = isCelsius ? Math.round((temperature - 32) * 5 / 9) : Math.round(temperature)
     const apTemp = isCelsius ? Math.round((apparentTemperature - 32) * 5 / 9) : Math.round(apparentTemperature)
-    console.log('current snap: ' + icon)
     return (
         <View style={styles.currentContainer}>
             <View style={styles.timePrecipContainer}>
-                <Text style={styles.timeText}>Now</Text>
+                <Time min time={_time} />
                 <PrecipProb precipProb={precipProbability} />
             </View>
             <View style={styles.iconContainer}>

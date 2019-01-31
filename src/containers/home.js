@@ -11,7 +11,8 @@ const mapStateToProps = (state) => {
     //meta
     metaConnectionType: state.meta.connectionType,
     metaEffectiveType: state.meta.effectiveType,
-
+    showSpinner: state.meta.showSpinner,
+    
     //user
     favoriteStations: state.user.favoriteStations,
     nearbyStations: state.user.nearbyStations,

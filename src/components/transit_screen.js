@@ -45,11 +45,10 @@ export default class TransitScreen extends React.Component {
   }
   _onChangeHandler = (searchText) => {
     const { scheduleData } = this.props
-    const { schedules = {}, timestamps = [] } = scheduleData
     let northSchedule, southSchedule
     const data = PARENT_STATIONS.map(station => {
-      northSchedule = station.stop_id + 'N' in schedules ? schedules[station.stop_id + 'N'] : [];
-      southSchedule = station.stop_id + 'S' in schedules ? schedules[station.stop_id + 'S'] : [];
+      northSchedule = station.stop_id + 'N' in scheduleData ? scheduleData[station.stop_id + 'N'] : [];
+      southSchedule = station.stop_id + 'S' in scheduleData ? scheduleData[station.stop_id + 'S'] : [];
       return {
         stop_id: station.stop_id,
         name: station.stop_name,

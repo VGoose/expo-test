@@ -6,8 +6,8 @@ import { padding, margin, fonts, colors } from '../styles/base'
 
 const WeatherModule = ({ isFetching, weatherError, city, currentForecast, hourlyForecast, isCelsius }) => {
 	//let data be "fresh" for 5 minutes/300 seconds
-	const bufferTime = (parseInt(currentForecast.time || 0) + 300) * 1000
-	const isStale = Date.now() > bufferTime
+	// const bufferTime = (parseInt(currentForecast.time || 0) + 300) * 1000
+	// const isStale = Date.now() > bufferTime
 	const _hourlyForecast = hourlyForecast.filter(f => (f.time * 1000) + 60 * 60 * 1000 > Date.now())
 
 	return (
@@ -23,7 +23,7 @@ const WeatherModule = ({ isFetching, weatherError, city, currentForecast, hourly
 				: <View style={styles.container}>
 					<Bar city={city} />
 					<SnapshotList
-						isStale={isStale}
+						// isStale={isStale}
 						hourly={_hourlyForecast}
 						isCelsius={isCelsius}
 						current={currentForecast}
@@ -32,7 +32,7 @@ const WeatherModule = ({ isFetching, weatherError, city, currentForecast, hourly
 	)
 }
 
-const SnapshotList = ({ isStale = true, hourly, current, isCelsius }) => {
+const SnapshotList = ({ isStale = false, hourly, current, isCelsius }) => {
 	let currentSnap, time, temp, apparentTemperature
 	if (!isStale) {
 		currentSnap = <CurrentSnapshot
@@ -55,13 +55,15 @@ const SnapshotList = ({ isStale = true, hourly, current, isCelsius }) => {
 			apparentTemperature={apparentTemperature}
 		/>
 	})
+	const snaps = [currentSnap, ...hourlySnaps]
 	return (
-		isStale
-			? <ScrollView horizontal contentContainerStyle={{ ...styles.snapshotListContainer, borderColor: colors.warning }}>
-				{hourlySnaps}
-			</ScrollView>
-			: <ScrollView horizontal contentContainerStyle={{ ...styles.snapshotListContainer, borderColor: colors.OK }}>
-				{[currentSnap, ...hourlySnaps]}
+		// isStale
+			// ? <ScrollView horizontal contentContainerStyle={{ ...styles.snapshotListContainer, borderColor: colors.warning }}>
+			// 	{hourlySnaps}
+			// </ScrollView>
+			<ScrollView horizontal contentContainerStyle={{ ...styles.snapshotListContainer, borderColor: colors.OK }}>
+				{/* fix flashing issue with only current snap showing */}
+				{snaps.length > 1 ? snaps : null}
 			</ScrollView>
 	)
 }

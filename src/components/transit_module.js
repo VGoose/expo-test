@@ -9,7 +9,7 @@ import { padding, fonts, colors, margin } from '../styles/base'
 const TransitModule = ({
   isNearby: showNearbyStationsFirst,
   scheduleLastUpdated,
-  time,
+
   scheduleData = {},
   isFetching,
   favoriteStations,
@@ -17,11 +17,11 @@ const TransitModule = ({
   toggleFavorite,
   fetchSchedule }) => {
 
-  const isFresh = (time - scheduleLastUpdated) < 60 * 1000
-  const statusColor = isFresh ? colors.OK : colors.warning
+  const isEmpty = Object.entries(scheduleData).length === 0 && scheduleData.constructor === Object
+  const statusColor = isEmpty ? colors.warning :colors.OK 
 
   //make countdown clocks from schedule scheduleData
-  const { schedules = {}, timestamps = [] } = scheduleData
+  
   let northSchedule, southSchedule
   const _isFav = (id) => {
     return favoriteStations.some((station) => id === station.stop_id)
@@ -30,8 +30,8 @@ const TransitModule = ({
   const favoriteStationsCountdowns = favoriteStations
     .map(station => {
       //keys in schedules are stop_id + N/S
-      northSchedule = station.stop_id + 'N' in schedules ? schedules[station.stop_id + 'N'] : [];
-      southSchedule = station.stop_id + 'S' in schedules ? schedules[station.stop_id + 'S'] : [];
+      northSchedule = station.stop_id + 'N' in scheduleData ? scheduleData[station.stop_id + 'N'] : [];
+      southSchedule = station.stop_id + 'S' in scheduleData ? scheduleData[station.stop_id + 'S'] : [];
       return <CountdownClock
         key={station.stop_id}
         id={station.stop_id}
@@ -47,8 +47,8 @@ const TransitModule = ({
     })
   const nearbyStationCountdowns = nearbyStations
     .map((station) => {
-      northSchedule = station.stop_id + 'N' in schedules ? schedules[station.stop_id + 'N'] : [];
-      southSchedule = station.stop_id + '' in schedules ? schedules[station.stop_id + 'S'] : [];
+      northSchedule = station.stop_id + 'N' in scheduleData ? scheduleData[station.stop_id + 'N'] : [];
+      southSchedule = station.stop_id + '' in scheduleData ? scheduleData[station.stop_id + 'S'] : [];
       return <CountdownClock
         key={station.stop_id}
         id={station.stop_id}
@@ -122,8 +122,8 @@ const Bar = ({ header, statusColor }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    height: 250,
+    flex: 1,
+    // height: 250,
     // display: 'flex',
     backgroundColor: colors.white,
     margin: margin.sm,
@@ -138,15 +138,15 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     height: 30,
     padding: padding.xs,
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
+    borderTopLeftRadius: 3,
+    borderTopRightRadius: 3,
     borderBottomWidth: 2,
     borderColor: colors.danger
     // marginLeft: -2,
     // marginRight: -2
   },
   barText: {
-    fontSize: fonts.md,
+    fontSize: fonts.sm,
   },
   swiperContainer: {
     display: 'flex',

@@ -9,7 +9,7 @@ export const weatherTypes = {
 }
 
 export const getLastWeather = () => dispatch => {
-  AsyncStorage.getItem('weatherLastState')
+  return AsyncStorage.getItem('weatherLastState')
     .then(state => {
       dispatch(offlineSaved(state))
       dispatch(weatherReceive(JSON.parse(state)))
@@ -46,9 +46,10 @@ const saveWeatherState = (state) => dispatch => {
 }
 export const fetchWeatherIfNeeded = () => (dispatch, getState) => {
   const { lat, lon } = getState().user.location
-  shouldWeatherFetch(getState()) 
-    ? dispatch(getWeather(lat, lon))
-    : console.log('no fetch') || null
+  if(shouldWeatherFetch(getState()) ) {
+    return dispatch(getWeather(lat, lon))
+  }
+   
 }
 const shouldWeatherFetch = (state) => {
   const secondsSinceLastUpdate = (lastUpdated - Date.now()) * 1000
@@ -64,8 +65,8 @@ const shouldWeatherFetch = (state) => {
 }
 const getWeather = (lat, lon) => (dispatch) => {
   dispatch(weatherRequest())
-  const url = `/api/weather/${lat}/${lon}`
-  axios.get(url)
+  const url = `/weather/${lat}/${lon}`
+  return axios.get(url)
     .then(
       res => {
         dispatch(weatherReceive(res.data))

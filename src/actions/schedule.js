@@ -8,7 +8,7 @@ export const OFFLINE_SAVE = 'SCHEDULE_OFFLINE_SAVE'
 export const OFFLINE_SAVED = 'SCHEDULE_OFFLINE_SAVED'
 
 export const getLastSchedule = () => dispatch => {
-	AsyncStorage.getItem('scheduleLastState')
+	return AsyncStorage.getItem('scheduleLastState')
 		.then(state => {
 			dispatch(offlineSaved(state))
 			dispatch(scheduleReceive(JSON.parse(state)))
@@ -49,10 +49,9 @@ const scheduleRequest = () => {
 }
 
 const scheduleReceive = (data) => {
-	console.log('scheduleReceive: ' + data.time)
 	return {
 		type: SCHEDULE_RECEIVE,
-		lastUpdated: data.time,
+		lastUpdated: Date.now(),
 		schedule: data.schedules
 	}
 }
@@ -66,15 +65,13 @@ const scheduleDeny = (err) => {
 }
 const scheduleFetch = () => (dispatch, getState) => {
 	dispatch(scheduleRequest())
-	axios.get(`/api/schedule/`)
+	return axios.get(`/schedule`)
 		.then(
 			res => {
-				console.log('-----isFetching')
-
 				dispatch(scheduleReceive(res.data))
 				dispatch(saveScheduleState(res.data))
 			},
-			err => console.log('-----' + err) || dispatch(scheduleDeny(err))
+			err => dispatch(scheduleDeny(err))
 		)
 }
 
@@ -90,8 +87,7 @@ const shouldScheduleFetch = (state) => {
 }
 
 export const fetchScheduleIfNeeded = () => (dispatch, getState) => {
-	console.log('if needed')
-	shouldScheduleFetch(getState())
-		? console.log('yes') || dispatch(scheduleFetch())
-		: console.log('no') || null
+	return shouldScheduleFetch(getState())
+		? dispatch(scheduleFetch())
+		: null
 }
