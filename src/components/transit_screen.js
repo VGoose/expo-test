@@ -117,9 +117,10 @@ const styles = StyleSheet.create({
   searchBarContainer: {
     height: 60,
     display: 'flex',
+    marginTop: margin.sm,
     marginBottom: margin.sm,
-    borderBottomColor: colors.darkGrey,
-    borderBottomWidth: 0.5
+    // borderBottomColor: colors.darkGrey,
+    // borderBottomWidth: 0.5
   },
   greyContainer: {
     backgroundColor: colors.grey,

@@ -43,7 +43,8 @@ export const colors  = {
   grey: '#E8E9EB',
   darkGrey: '#808080',
   lightGrey: '#f5f5f5',
-  xlightGrey: '#fafafa'
+  xlightGrey: '#fafafa',
+  black: 'black'
 }
 
 export const padding = {

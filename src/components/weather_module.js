@@ -61,7 +61,7 @@ const SnapshotList = ({ isStale = false, hourly, current, isCelsius }) => {
 			// ? <ScrollView horizontal contentContainerStyle={{ ...styles.snapshotListContainer, borderColor: colors.warning }}>
 			// 	{hourlySnaps}
 			// </ScrollView>
-			<ScrollView horizontal contentContainerStyle={{ ...styles.snapshotListContainer, borderColor: colors.OK }}>
+			<ScrollView horizontal contentContainerStyle={{ ...styles.snapshotListContainer }}>
 				{/* fix flashing issue with only current snap showing */}
 				{snaps.length > 1 ? snaps : null}
 			</ScrollView>
@@ -70,7 +70,7 @@ const SnapshotList = ({ isStale = false, hourly, current, isCelsius }) => {
 const Bar = ({ city }) => {
 	return (
 		<View style={styles.barContainer}>
-			<Text style={styles.barText}>{city}</Text>
+			<Text style={styles.barText}>weather forecast</Text>
 			<Text style={styles.barAttribution}>Powered By Dark Sky</Text>
 		</View>
 	)
@@ -82,10 +82,17 @@ const Bar = ({ city }) => {
 
 const styles = StyleSheet.create({
 	container: {
+		shadowColor: colors.darkGrey,
+		shadowOffset: {
+			width: 3,
+			height: 3,
+		},
+		shadowOpacity: .5,
+		shadowRadius: 3,
 		backgroundColor: 'white',
 		height: 170,
-		margin: margin.sm,
-		borderRadius: 5,
+		margin: margin.md,
+		borderRadius: 10,
 		padding: 2
 	},
 	barContainer: {
@@ -107,22 +114,21 @@ const styles = StyleSheet.create({
 	},
 	emptyContainer: {
 		flex: 1,
-		backgroundColor: colors.grey,
+		// backgroundColor: colors.grey,
 		alignItems: 'center',
-		borderTopWidth: 2,
-		borderColor: colors.danger,
 		justifyContent: 'center',
 	},
 	snapshotListContainer: {
-		backgroundColor: colors.grey,
-		borderTopWidth: 2,
-		borderColor: 'transparent',
+		// backgroundColor: colors.grey,
 
 		flexDirection: 'row',
 		alignItems: 'center',
 
 	},
 	currentSnapshotContainer: {
+		borderTopWidth: 1,
+		borderBottomWidth: 1,
+		borderColor: colors.darkGrey,
 		display: 'flex',
 		flexDirection: 'row',
 	},
@@ -139,7 +145,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 
-		backgroundColor: colors.grey,
+		// backgroundColor: colors.grey,
 		padding: padding.sm
 	},
 	errorText: {

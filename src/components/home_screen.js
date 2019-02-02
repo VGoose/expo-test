@@ -45,7 +45,10 @@ const HomeScreen = ({
       {({ time }) => (
         <Page pageName="Home">
           <ScrollView
-            contentContainerStyle={{...styles.container, backgroundColor: metaConnectionType === 'none' ? colors.darkGrey : colors.grey}}
+            contentContainerStyle={{
+              ...styles.container,
+              // backgroundColor: metaConnectionType === 'none' ? colors.darkGrey : colors.grey
+            }}
             refreshControl={
               <RefreshControl
                 refreshing={false}
@@ -90,10 +93,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
-    backgroundColor: colors.xlightGrey
+
   },
   offlineContainer: {
-    backgroundColor: colors.darkGrey,
+
     display: 'flex',
     height: 20,
     justifyContent: 'center',

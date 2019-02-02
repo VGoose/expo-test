@@ -2,16 +2,14 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import Time from './reusable/time';
 
-import { padding, fonts } from '../styles/base'
+import { padding, fonts, colors } from '../styles/base'
 
 const TopBar = ({ page }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.pageName}>{page}</Text>
       <Time>
         {({ getTimeHHMM, time, day, month }) => (
           <View style={styles.timeContainer}>
-            {/* <Text style={styles.timeText}>{`${getTimeHHMM()}`}</Text> */}
             <Text style={styles.dayText}>{`${day.toUpperCase()} ${month.toUpperCase()} ${time.getDate()}`}</Text>
           </View>
         )}
@@ -20,15 +18,21 @@ const TopBar = ({ page }) => {
     </View>
   )
 }
-const TOP_BAR_HEIGHT = 60
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: '#d3d3d3',
-    justifyContent: 'space-between',
+		// shadowColor: colors.darkGrey,
+		// shadowOffset: {
+		// 	width: 3,
+		// 	height: 3,
+		// },
+		// shadowOpacity: .3,
+    // shadowRadius: 3,
+    backgroundColor: colors.white,
+    justifyContent: 'center',
     alignItems: 'flex-end',
     flexDirection: 'row',
-    height: TOP_BAR_HEIGHT,
+    height: 50, 
     paddingLeft: padding.sm,
     paddingRight: padding.sm,
   },
@@ -38,8 +42,10 @@ const styles = StyleSheet.create({
   },
   timeContainer: {
     display: 'flex',
+
     // flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   dayText: {
     textAlign: 'center',

@@ -191,9 +191,9 @@ const Row = ({ animatedOpacity, schedule, index }) => {
             style={{
               ...styles.row,
               opacity: animatedOpacity,
-              backgroundColor: index % 2 !== 1 ? '#D5D9DA' : '#FFFFFF',
-              borderBottomLeftRadius: index === 2 ? 5 : 0,
-              borderBottomRightRadius: index === 2 ? 5 : 0,
+
+              // borderBottomLeftRadius: index === 2 ? 5 : 0,
+              // borderBottomRightRadius: index === 2 ? 5 : 0,
             }}
           >
             <View style={styles.row_left}>
@@ -267,19 +267,38 @@ const { fullWidth, fullHeight } = dimensions
 const styles = StyleSheet.create({
   countdownClock: {
     backgroundColor: colors.white,
-    marginBottom: margin.xs,
-    borderRadius: 5,
+    marginBottom: margin.sm,
+    overflow: 'hidden',
+    borderBottomWidth: 1,
+    borderBottomColor: colors.lightGrey
+    // borderRadius: 20
+
+    // shadowColor: colors.darkGrey,
+		// shadowOffset: {
+		// 	// width: 3,
+		// 	// height: 1,
+		// },
+		// shadowOpacity: .5,
+		// shadowRadius: 1,
     // height: 140,
   },
   countdownClock_Collapsed: {
+    shadowColor: colors.darkGrey,
+		shadowOffset: {
+			width: 3,
+			height: 3,
+		},
+		shadowOpacity: .5,
+		shadowRadius: 3,
     backgroundColor: colors.white,
-
-    borderColor: colors.darkGrey,
+    borderBottomWidth: 1,
+    borderColor: colors.lightGrey,
     marginBottom: margin.xs,
 
   },
   countdownClock_Bar: {
     // backgroundColor: 'blue',
+    
     flex: 0,
     flexDirection: 'row',
     alignItems: 'stretch',
@@ -319,6 +338,7 @@ const styles = StyleSheet.create({
   rowContainer: {
     flex: 1,
     height: 90,
+    backgroundColor: colors.lightGrey
   },
   row: {
     flex: 1,

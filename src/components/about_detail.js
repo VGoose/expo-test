@@ -6,10 +6,8 @@ import Bio from './bio'
 
 class AboutDetail extends React.Component {
   static navigationOptions = {
-    title: 'About',
-    headerStyle: {
+    title: 'ABOUT',
 
-    }
   }
   //TODO: link email
   render() {
@@ -41,7 +39,7 @@ class AboutDetail extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.grey,
+    backgroundColor: colors.white,
     alignItems: 'center',
   },
   textContainer: {

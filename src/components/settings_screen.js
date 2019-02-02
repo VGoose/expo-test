@@ -12,21 +12,21 @@ import Bio from './bio'
 
 class SettingsScreen extends React.Component {
   static navigationOptions = {
-    title: 'Settings',
-    headerStyle: {
-      // height: 0
-    }
+    title: 'SETTINGS',
   }
   render() {
-    
+
     return (
 
       <View style={styles.container}>
         <Bio />
-        <SettingItem handlePress={() => this.props.navigation.navigate('SettingsDetail')} icon={require('../assets/icons/settings.png')} name="General" nav />
-        <SettingItem handlePress={() => this.props.navigation.navigate('AboutDetail')} icon={require('../assets/icons/info.png')} name="About" nav />
-        <SettingItem handlePress={() => Linking.openURL('itms-apps://itunes.apple.com/app/id{appStoreId}?action=write-review')} icon={require('../assets/icons/rate.png')} name="Rate" />
-        <SettingItem handlePress={() => Linking.openURL('mailto:anhvouw@gmail.com?subject=gogonow_feedback')} icon={require('../assets/icons/mail.png')} name="Contact" />
+        <View style={styles.settingContainer}>
+
+          <SettingItem handlePress={() => this.props.navigation.navigate('SettingsDetail')} icon={require('../assets/icons/settings.png')} name="General" nav />
+          <SettingItem handlePress={() => this.props.navigation.navigate('AboutDetail')} icon={require('../assets/icons/info.png')} name="About" nav />
+          <SettingItem handlePress={() => Linking.openURL('itms-apps://itunes.apple.com/app/id{appStoreId}?action=write-review')} icon={require('../assets/icons/rate.png')} name="Rate" />
+          <SettingItem handlePress={() => Linking.openURL('mailto:anhvouw@gmail.com?subject=gogonow_feedback')} icon={require('../assets/icons/mail.png')} name="Contact" />
+        </View>
       </View>
     )
   }
@@ -54,31 +54,65 @@ const SettingItem = ({ name, icon, nav, handlePress }) => {
 
 
 
-const SettingsNavigator = createStackNavigator({
-  Settings: {
-    screen: SettingsScreen
-  },
-  SettingsDetail: {
-    screen: Setting
-  },
-  AboutDetail: {
-    screen: AboutDetail
-  }
-},
+const SettingsNavigator = createStackNavigator(
   {
+    Settings: {
+      screen: SettingsScreen
+    },
+    SettingsDetail: {
+      screen: Setting
+    },
+    AboutDetail: {
+      screen: AboutDetail
+    }
+  },
+  {
+    defaultNavigationOptions: {
+      headerStyle: {
+        height: 60,
+        borderBottomWidth: 0
+      },
+      headerTitleStyle: {
+        fontSize: fonts.lg,
+        fontWeight: 'normal',
+        color: colors.black 
+      }
+    },
     initialRouteName: "Settings",
+  },
+
+);
+
+export const NavTitle = ({ children, style }) => {
+  const _style = {
+    ...style,
+    fontSize: fonts.lg,
+    fontWeight: 'normal',
+    color: colors.black
 
   }
-);
+  return <Text style={_style}>{children}</Text>
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    // borderTopColor: colors.darkGrey,
-    // borderTopWidth: 0.5,
-    backgroundColor: colors.grey,
+    alignItems: 'stretch',
+    backgroundColor: colors.white,
+  },
+  settingsContainer: {
+    display: 'flex',
+    shadowColor: colors.darkGrey,
+    shadowOffset: {
+      width: 3,
+      height: 3,
+    },
+    shadowOpacity: .5,
+    shadowRadius: 3,
+    borderRadius: 10,
+    backgroundColor: colors.white,
   },
   itemContainer: {
     display: 'flex',
@@ -89,6 +123,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     paddingLeft: padding.sm,
     paddingRight: padding.sm,
+
   },
   itemImage: {
     // borderRadius: 5,

@@ -125,6 +125,11 @@ export const CurrentSnapshot = ({ currentForecast, isCelsius }) => {
 
 const styles = StyleSheet.create({
     hourlyContainer: {
+        // borderTopWidth: 1, 
+        // borderBottomWidth: 1,
+        // borderColor: colors.darkGrey,
+        borderRadius: 5,
+        marginLeft: margin.xs,
         display: 'flex',
         flexDirection: 'column',
         padding: padding.sm,
@@ -132,6 +137,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     currentContainer: {
+        // borderTopWidth: 1,
+		// borderBottomWidth: 1,
+		// borderColor: colors.darkGrey,
         display: 'flex',
         flexDirection: 'column',
         padding: padding.sm,

@@ -18,7 +18,6 @@ const TransitModule = ({
   fetchSchedule }) => {
 
   const isEmpty = Object.entries(scheduleData).length === 0 && scheduleData.constructor === Object
-  const statusColor = isEmpty ? colors.warning :colors.OK 
 
   //make countdown clocks from schedule scheduleData
   
@@ -68,7 +67,7 @@ const TransitModule = ({
     {showNearbyStationsFirst //alignment issue with index prop of Swiper
       ? <Swiper loop={false} paginationStyle={styles.paginationStyle} style={styles.swiperContainer}>
         <View style={styles.swiperSlideContainer}>
-          <Bar header="Nearby Stations" statusColor={statusColor} />
+          <Bar header="transit: nearby stations"  />
           <ScrollView
             contentContainerStyle={styles.scrollView}
             refreshControl={
@@ -78,7 +77,7 @@ const TransitModule = ({
           </ScrollView>
         </View>
         <View style={styles.swiperSlideContainer}>
-          <Bar header="Favorite Stations" statusColor={statusColor} />
+          <Bar header="transit: favorite stations"  />
           <ScrollView
             contentContainerStyle={styles.scrollView}
             refreshControl={
@@ -90,7 +89,7 @@ const TransitModule = ({
       </Swiper>
       : <Swiper loop={false} paginationStyle={styles.paginationStyle} style={styles.swiperContainer}>
         <View style={styles.swiperSlideContainer}>
-          <Bar header="Favorite Stations" statusColor={statusColor} />
+          <Bar header="transit: favorite stations"  />
           <ScrollView
             contentContainerStyle={styles.scrollView}
             refreshControl={
@@ -100,7 +99,7 @@ const TransitModule = ({
           </ScrollView>
         </View>
         <View style={styles.swiperSlideContainer}>
-          <Bar header="Nearby Stations" statusColor={statusColor} />
+          <Bar header="transit: nearby stations" />
           <ScrollView
             contentContainerStyle={styles.scrollView}
             refreshControl={
@@ -112,9 +111,9 @@ const TransitModule = ({
       </Swiper>}
   </View>
 }
-const Bar = ({ header, statusColor }) => {
+const Bar = ({ header }) => {
   return (
-    <View style={{...styles.barContainer, borderColor: statusColor}}>
+    <View style={styles.barContainer}>
       <Text style={styles.barText}>{header}</Text>
     </View>
   )
@@ -122,13 +121,19 @@ const Bar = ({ header, statusColor }) => {
 
 const styles = StyleSheet.create({
   container: {
+    // overflow: 'hidden',
+    // padding: 10,
+		shadowColor: colors.darkGrey,
+		shadowOffset: {
+			width: 3,
+			height: 3,
+		},
+		shadowOpacity: .5,
+		shadowRadius: 3,
     flex: 1,
-    // height: 250,
-    // display: 'flex',
     backgroundColor: colors.white,
-    margin: margin.sm,
-    borderRadius: 5,
-
+    margin: margin.md,
+    borderRadius: 10,
   },
   barContainer: {
     backgroundColor: colors.white,
@@ -138,24 +143,25 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     height: 30,
     padding: padding.xs,
-    borderTopLeftRadius: 3,
-    borderTopRightRadius: 3,
-    borderBottomWidth: 2,
-    borderColor: colors.danger
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    // borderBottomWidth: 2,
+    // borderColor: colors.danger
     // marginLeft: -2,
     // marginRight: -2
   },
   barText: {
-    fontSize: fonts.sm,
+    fontSize: fonts.md,
   },
   swiperContainer: {
     display: 'flex',
   },
   swiperSlideContainer: {
     flex: 1,
-    padding: 2,
+    overflow: 'hidden',
+    // padding: 2,
     paddingTop: 0,
-    backgroundColor: colors.grey,
+    // backgroundColor: colors.grey,
     borderRadius: 5,
     // borderWidth: 1,
     // borderColor: colors.white,

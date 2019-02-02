@@ -4,10 +4,8 @@ import { colors, padding, fonts } from '../styles/base';
 
 class SettingsDetail extends React.Component {
   static navigationOptions = {
-    title: 'General Settings',
-    headerStyle: {
+    title: 'GENERAL',
 
-    }
   }
   _renderItem = ({ item, section }) =>
     <Option key={`${section}.${item}`} name={item.name} type={item.type} value={item.value} onChange={item.onChange} />
@@ -67,7 +65,7 @@ const Option = ({ name, type, value, onChange }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.grey
+    // backgroundColor: colors.grey
   },
   optionContainer: {
     height: 50,
@@ -79,6 +77,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     paddingLeft: padding.sm,
     paddingRight: padding.sm,
+    borderBottomWidth: 1,
+    borderColor: colors.lightGrey,
 
   },
   optionName: {
@@ -91,7 +91,8 @@ const styles = StyleSheet.create({
   },
   headerName: {
     fontSize: fonts.lg,
-    color: colors.darkGrey
+    fontWeight: '500',
+    // color: colors.darkGrey
   },
 })
 
