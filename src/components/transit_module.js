@@ -159,12 +159,8 @@ const styles = StyleSheet.create({
   swiperSlideContainer: {
     flex: 1,
     overflow: 'hidden',
-    // padding: 2,
     paddingTop: 0,
-    // backgroundColor: colors.grey,
-    borderRadius: 5,
-    // borderWidth: 1,
-    // borderColor: colors.white,
+    borderRadius: 10,
   },
   scrollView: {
     paddingTop: padding.xxs,
