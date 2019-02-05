@@ -21,7 +21,7 @@ function offlineFetch() {
 
 function fetchData() {
 	return Promise.all([
-		// store.dispatch(fetchScheduleIfNeeded()),
+		store.dispatch(fetchScheduleIfNeeded()),
 		store.dispatch(askLocationPermission()),
 		store.dispatch(fetchUserIfNeeded()),
 		store.dispatch(locateUser())

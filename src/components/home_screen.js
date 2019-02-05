@@ -6,7 +6,6 @@ import { Text, View, StyleSheet, ScrollView, RefreshControl } from 'react-native
 import Page from './page'
 import WeatherModule from './weather_module'
 import TransitModule from './transit_module'
-import Time from './reusable/time'
 import { fonts, padding } from '../styles/base'
 
 const HomeScreen = ({
@@ -44,46 +43,41 @@ const HomeScreen = ({
     return <View></View>
   }
   return (
-    <Time>
-      {({ time }) => (
-        <Page pageName="Home">
-          {!isLocationEnabled ? <OfflineBar location /> : null}
-          <ScrollView
-            contentContainerStyle={{
-              ...styles.container,
-              // backgroundColor: metaConnectionType === 'none' ? colors.darkGrey : colors.grey
-            }}
-            refreshControl={
-              <RefreshControl
-                refreshing={false}
-                onRefresh={() => { fetchSchedule(), fetchWeather() }}
-              />
-            }
-          >
-            <WeatherModule
-              isFetching={weatherIsFetching}
-              isCelsius={isCelsius}
-              currentForecast={currentForecast}
-              weatherError={weatherError}
-              fetchWeather={fetchWeather}
-              hourlyForecast={hourlyForecast}
-              city={forecastLocation}
-            />
-            <TransitModule
-              time={time}
-              isNearby={isNearby}
-              scheduleLastUpdated={scheduleLastUpdated}
-              fetchSchedule={fetchSchedule}
-              scheduleData={scheduleData}
-              isFetching={scheduleIsFetching || userIsFetching}
-              favoriteStations={favoriteStations}
-              toggleFavorite={toggleFavorite}
-              nearbyStations={nearbyStations}
-            />
-          </ScrollView>
-        </Page>
-      )}
-    </Time>
+
+    <Page pageName="Home">
+      {!isLocationEnabled ? <OfflineBar location /> : null}
+      <ScrollView
+        contentContainerStyle={{
+          ...styles.container,
+        }}
+        refreshControl={
+          <RefreshControl
+            refreshing={false}
+            onRefresh={() => { fetchSchedule(), fetchWeather() }}
+          />
+        }
+      >
+        <WeatherModule
+          isFetching={weatherIsFetching}
+          isCelsius={isCelsius}
+          currentForecast={currentForecast}
+          weatherError={weatherError}
+          fetchWeather={fetchWeather}
+          hourlyForecast={hourlyForecast}
+          city={forecastLocation}
+        />
+        <TransitModule
+          isNearby={isNearby}
+          scheduleLastUpdated={scheduleLastUpdated}
+          fetchSchedule={fetchSchedule}
+          scheduleData={scheduleData}
+          isFetching={scheduleIsFetching || userIsFetching}
+          favoriteStations={favoriteStations}
+          toggleFavorite={toggleFavorite}
+          nearbyStations={nearbyStations}
+        />
+      </ScrollView>
+    </Page>
   )
 }
 

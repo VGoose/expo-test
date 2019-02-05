@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "gogonow",
-    "slug": "https://expo.io/@vgoose/gogonow",
+    "slug": "gogonow",
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": [
