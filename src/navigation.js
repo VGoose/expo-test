@@ -22,6 +22,13 @@ const AppNavigator = createBottomTabNavigator(
     },
   },
   {
+    //TODO: flicker bug on header - attempted fix
+    animationEnabled: false,
+    lazy: false,
+    headerMode: 'screen',
+    //
+
+
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;

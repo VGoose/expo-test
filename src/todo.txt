@@ -27,17 +27,27 @@ option 1: baked into every fetch
     *sol: have separate states for weather and schedule
 option 2: manually call 
   *not as clean
+if network error - shows up instead of offline data 
+
+add user settings to asyncstorage + startupfetch
+scaling - need to use flexbox to make everything fit - will have to make home page scrollview 
+
+animation: 
+  -countdown clock opening
+  -countdown clock favoriting
+
+https back end
 
 //NOT DONE ----------------
 
 error on one feed req means having to request all 
 
-text alignment issue with different font sizes - there's some invisible padding 
-
 searchbar not focusing after first render
 
-https back end
 
-scaling - need to use flexbox to make everything fit - will have to make home page scrollview 
+use refs to get height of transitmodule
 
 clean up error handling
+
+unhandled promise schedul receive
+unhandled promise locateError

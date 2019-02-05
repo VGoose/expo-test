@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-end',
     flexDirection: 'row',
-    height: 50, 
+    height: 40, 
     paddingLeft: padding.sm,
     paddingRight: padding.sm,
   },

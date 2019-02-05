@@ -11,7 +11,19 @@ export const dimensions = {
 }
 export const fonts = (() => {
   const width = dimensions.fullWidth
-  if(width <= 750) {
+  if (width > 750) {
+    return {
+      xs: 10,
+      sm: 12,
+      md: 16,
+      lg: 20,
+      xl: 28,
+      xxl: 35,
+      primary: 'Cochin'
+    }
+  }
+
+  if (width > 640) {
     return {
       xs: 8,
       sm: 11,
@@ -21,21 +33,22 @@ export const fonts = (() => {
       xxl: 29,
       primary: 'Cochin'
     }
-  }else {
+  } else {
     return {
-      xs: 10,
-      sm: 12,
-      md: 16,
-      lg: 20,
-      xl: 28,
-      xxl: 35, 
+      xs: 8,
+      sm: 10,
+      md: 12,
+      lg: 16,
+      xl: 20,
+      xxl: 25,
       primary: 'Cochin'
+
     }
   }
 })()
 
-  
-export const colors  = {
+
+export const colors = {
   danger: 'red',
   warning: 'yellow',
   OK: 'green',

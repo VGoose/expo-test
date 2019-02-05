@@ -7,7 +7,7 @@
     "platforms": [
       "ios"
     ],
-    "version": "0.1.0",
+    "version": "0.1.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -22,8 +22,13 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.anhvo.gogonow"
+      "supportsTablet": false,
+      "bundleIdentifier": "com.anhvo.gogonow",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "This app uses your location to locate nearby subway stations and weather data.  This app does not collect user data.",
+        "NSLocationAlwaysUsageDescription": "This app uses your location to locate nearby subway stations and weather data.  This app does not collect user data.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "This app uses your location to locate nearby subway stations and weather data.  This app does not collect user data."
+      }
     }
   }
 }

@@ -20,7 +20,7 @@ const initialState = {
     favoriteStations: [],
     isLocationEnabled: null,
     isCelsius: false,
-    isNearby: false,
+    isNearby: true,
 };
 
 export default function (state = initialState, action) {

@@ -21,11 +21,11 @@ class SettingsScreen extends React.Component {
       <View style={styles.container}>
         <Bio />
         <View style={styles.settingContainer}>
-
           <SettingItem handlePress={() => this.props.navigation.navigate('SettingsDetail')} icon={require('../assets/icons/settings.png')} name="General" nav />
           <SettingItem handlePress={() => this.props.navigation.navigate('AboutDetail')} icon={require('../assets/icons/info.png')} name="About" nav />
           <SettingItem handlePress={() => Linking.openURL('itms-apps://itunes.apple.com/app/id{appStoreId}?action=write-review')} icon={require('../assets/icons/rate.png')} name="Rate" />
           <SettingItem handlePress={() => Linking.openURL('mailto:anhvouw@gmail.com?subject=gogonow_feedback')} icon={require('../assets/icons/mail.png')} name="Contact" />
+          <SettingItem handlePress={() => Linking.openURL('https://sites.google.com/view/gogonow-privacy-policy/home')} icon={require('../assets/icons/privacy.png')} name="Privacy Policy" />
         </View>
       </View>
     )
@@ -69,7 +69,7 @@ const SettingsNavigator = createStackNavigator(
   {
     defaultNavigationOptions: {
       headerStyle: {
-        height: 60,
+        height: 40,
         borderBottomWidth: 0
       },
       headerTitleStyle: {
@@ -83,16 +83,6 @@ const SettingsNavigator = createStackNavigator(
 
 );
 
-export const NavTitle = ({ children, style }) => {
-  const _style = {
-    ...style,
-    fontSize: fonts.lg,
-    fontWeight: 'normal',
-    color: colors.black
-
-  }
-  return <Text style={_style}>{children}</Text>
-}
 
 const styles = StyleSheet.create({
   container: {
