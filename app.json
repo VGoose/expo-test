@@ -1,13 +1,13 @@
 {
   "expo": {
     "name": "gogonow",
-    "slug": "gogonow",
+    "slug": "https://expo.io/@vgoose/gogonow",
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": [
       "ios"
     ],
-    "version": "0.1.1",
+    "version": "0.1.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -25,10 +25,11 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.anhvo.gogonow",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "This app uses your location to locate nearby subway stations and weather data.  This app does not collect user data.",
-        "NSLocationAlwaysUsageDescription": "This app uses your location to locate nearby subway stations and weather data.  This app does not collect user data.",
-        "NSLocationAlwaysAndWhenInUseUsageDescription": "This app uses your location to locate nearby subway stations and weather data.  This app does not collect user data."
+        "NSLocationWhenInUseUsageDescription": "This app uses your location to locate nearby subway stations and weather data.  This app does not collect user data."
       }
+    },
+    "android": {
+      "package": "com.anhvo.gogonow"
     }
   }
 }

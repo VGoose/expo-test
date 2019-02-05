@@ -4,6 +4,7 @@ import { fetchScheduleIfNeeded, getLastSchedule } from './actions/schedule'
 import { checkConnection, hideSpinner } from './actions/meta'
 import {
 	locateUser,
+	locateError,
 	userLocated,
 	setNearbyStations,
 	askLocationPermission,
@@ -20,12 +21,11 @@ function offlineFetch() {
 
 function fetchData() {
 	return Promise.all([
-		store.dispatch(fetchScheduleIfNeeded()),
+		// store.dispatch(fetchScheduleIfNeeded()),
 		store.dispatch(askLocationPermission()),
 		store.dispatch(fetchUserIfNeeded()),
 		store.dispatch(locateUser())
-			.then(pos => {
-				store.dispatch(userLocated(pos.coords.latitude, pos.coords.longitude))
+			.then(und => {
 				store.dispatch(fetchWeatherIfNeeded())
 				store.dispatch(setNearbyStations(0.5))
 			})

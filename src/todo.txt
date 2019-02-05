@@ -38,8 +38,19 @@ animation:
 
 https back end
 
-//NOT DONE ----------------
+screens flickering on tab change 
+  -safe area view from react native flickers,
+  -fix: use safeareaview from react navigation
 
+what if user moved ? 
+  -fix: new state: location last updated
+
+null is not an object - getState.user.location.lat 
+  - possibly because not calling locateUser if user enables location services after startup
+  -fix: if user.location = null || it's been more than 5 minutes, fetch location before fetching data
+bug: location denied -> no nearby stations -> enable -> can't display nearby sts
+  -fix: add getnearby stations to schedule fetch
+//NOT DONE ----------------
 error on one feed req means having to request all 
 
 searchbar not focusing after first render

@@ -5,7 +5,6 @@ import { Text, View, StyleSheet, Image, TouchableHighlight, Linking } from 'reac
 import { createStackNavigator } from 'react-navigation'
 import { colors, fonts, padding, margin } from '../styles/base'
 
-import Page from './page'
 import AboutDetail from './about_detail'
 import Setting from '../containers/setting'
 import Bio from './bio'
@@ -32,8 +31,6 @@ class SettingsScreen extends React.Component {
   }
 }
 
-
-
 const SettingItem = ({ name, icon, nav, handlePress }) => {
   return <TouchableHighlight onPress={handlePress}>
     <View style={styles.itemContainer}>
@@ -51,8 +48,6 @@ const SettingItem = ({ name, icon, nav, handlePress }) => {
     </View>
   </TouchableHighlight>
 }
-
-
 
 const SettingsNavigator = createStackNavigator(
   {
@@ -82,7 +77,6 @@ const SettingsNavigator = createStackNavigator(
   },
 
 );
-
 
 const styles = StyleSheet.create({
   container: {
@@ -147,4 +141,3 @@ const styles = StyleSheet.create({
   }
 })
 export default SettingsNavigator
-// export default SettingsScreen

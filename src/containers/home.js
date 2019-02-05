@@ -21,6 +21,7 @@ const mapStateToProps = (state) => {
     userLocation: state.user.location,
     isCelsius: state.user.isCelsius,
     isNearby: state.user.isNearby,
+    isLocationEnabled: state.user.isLocationEnabled,
 
     //schedule
     scheduleData: state.schedule.schedule || {},

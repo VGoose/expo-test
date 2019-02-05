@@ -2,12 +2,11 @@
 import React from 'react'
 import { Image } from 'react-native'
 import { createBottomTabNavigator, createAppContainer } from "react-navigation"
-import { connect } from 'react-redux'
 
 import Home from './containers/home'
 import Transit from './containers/transit'
 import SettingScreen from './components/settings_screen'
-import { colors, margin } from './styles/base';
+import { margin } from './styles/base';
 
 const AppNavigator = createBottomTabNavigator(
   {
@@ -22,12 +21,6 @@ const AppNavigator = createBottomTabNavigator(
     },
   },
   {
-    //TODO: flicker bug on header - attempted fix
-    animationEnabled: false,
-    lazy: false,
-    headerMode: 'screen',
-    //
-
 
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {

@@ -21,13 +21,6 @@ const TopBar = ({ page }) => {
 
 const styles = StyleSheet.create({
   container: {
-		// shadowColor: colors.darkGrey,
-		// shadowOffset: {
-		// 	width: 3,
-		// 	height: 3,
-		// },
-		// shadowOpacity: .3,
-    // shadowRadius: 3,
     backgroundColor: colors.white,
     justifyContent: 'center',
     alignItems: 'flex-end',
@@ -42,8 +35,6 @@ const styles = StyleSheet.create({
   },
   timeContainer: {
     display: 'flex',
-
-    // flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -54,7 +45,6 @@ const styles = StyleSheet.create({
   },
   timeText: {
     fontSize: fonts.lg,
-    // paddingBottom: padding.sm
   }
 })
 

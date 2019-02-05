@@ -7,7 +7,7 @@ import Page from './page'
 import WeatherModule from './weather_module'
 import TransitModule from './transit_module'
 import Time from './reusable/time'
-import { colors, fonts } from '../styles/base'
+import { fonts, padding } from '../styles/base'
 
 const HomeScreen = ({
   //meta
@@ -22,6 +22,8 @@ const HomeScreen = ({
   nearbyStations = [],
   isCelsius,
   isNearby,
+  userError,
+  isLocationEnabled,
 
   //schedule props
   scheduleData = {},
@@ -36,6 +38,7 @@ const HomeScreen = ({
   hourlyForecast = [],
   weatherError,
   fetchWeather,
+
 }) => {
   if (userIsFetching || showSpinner) {
     return <View></View>
@@ -44,6 +47,7 @@ const HomeScreen = ({
     <Time>
       {({ time }) => (
         <Page pageName="Home">
+          {!isLocationEnabled ? <OfflineBar location /> : null}
           <ScrollView
             contentContainerStyle={{
               ...styles.container,
@@ -83,10 +87,17 @@ const HomeScreen = ({
   )
 }
 
-const OfflineBar = () =>
-  <View style={styles.offlineContainer}>
-    <Text style={styles.offlineText}>Offline Mode</Text>
-  </View>
+const OfflineBar = ({ location }) =>
+  location
+    ? <View style={styles.offlineContainer}>
+      <Text style={styles.offlineText}>
+        Please enable location services.
+      </Text>
+      <Text style={styles.offlineText}>Data displayed may be inaccurate.</Text>
+    </View>
+    : <View style={styles.offlineContainer}>
+      <Text style={styles.offlineText}>No internet connection.  Operating in offline mode</Text>
+    </View>
 
 
 const styles = StyleSheet.create({
@@ -96,14 +107,17 @@ const styles = StyleSheet.create({
 
   },
   offlineContainer: {
-
     display: 'flex',
     height: 20,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingLeft: padding.sm,
+    paddingRight: padding.sm,
+    flexDirection: 'column'
   },
   offlineText: {
-    fontSize: fonts.sm
+    fontSize: fonts.sm,
+    textAlign: 'center'
   },
 })
 export default HomeScreen

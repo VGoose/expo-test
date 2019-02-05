@@ -67,11 +67,6 @@ export const askLocationPermission = () => dispatch => {
 		)
 }
 
-const requestPermission = () => {
-	return {
-		type: userTypes.PERMISSION_REQUEST
-	}
-}
 
 const receivePermission = (isGranted) => {
 	return {
@@ -81,9 +76,21 @@ const receivePermission = (isGranted) => {
 }
 
 export const setNearbyStations = (rad) => (dispatch, getState) => {
-	const { lat, lon } = getState().user.location
-	const stations = getNearbyStations(lat, lon, rad)
-	dispatch(userReceive({ nearbyStations: stations }))
+	const loc = getState().user.location
+	const lastLocationUpdated = getState().user.locationTime
+
+	//handle when user manually enable location & update location if >5 min since last locate 
+	if (!loc || (Date.now() - lastLocationUpdated) > 1000 * 60 * 5) {
+		dispatch(locateUser())
+			.then(und => {
+				const stations = getNearbyStations(loc.lat, loc.lon, rad)
+				dispatch(userReceive({ nearbyStations: stations }))
+			})
+			.catch(error => dispatch(locateError(error)))
+	}else {
+		const stations = getNearbyStations(loc.lat, loc.lon, rad)
+		dispatch(userReceive({ nearbyStations: stations }))
+	}
 }
 const getNearbyStations = (lat, lon, rad) => {
 	let x, y, dist
@@ -118,6 +125,8 @@ const userLocate = () => {
 }
 
 export const userLocated = (lat, lon) => {
+
+
 	return {
 		type: userTypes.USER_LOCATED,
 		lat,
@@ -125,7 +134,18 @@ export const userLocated = (lat, lon) => {
 	}
 }
 
-const locateError = (error) => {
+//located -> userLocated() & clear Error
+//not located -> locateError
+
+export const locateError = (error) => dispatch => {
+	if (error === null) {
+		return {
+			type: userTypes.USER_ERROR,
+			error: {
+				locateError: null
+			}
+		}
+	}
 	return {
 		type: userTypes.USER_ERROR,
 		error: {
@@ -135,10 +155,11 @@ const locateError = (error) => {
 }
 export const locateUser = () => (dispatch, getState) => {
 	dispatch(userLocate())
-	if (getState().user.isLocationEnabled) {
-		dispatch(locateError(new Error('Location services not enabled.')))
-	}
 	return Location.getCurrentPositionAsync({ enableHighAccuracy: false })
+		.then(pos => {
+			dispatch(locateError(null))
+			dispatch(userLocated(pos.coords.latitude, pos.coords.longitude))
+		})
 }
 
 const userRequest = () => {
@@ -199,7 +220,7 @@ const userFetch = () => dispatch => {
 						try {
 							let _v = JSON.parse(v)
 							//parsing boolean string
-							if(_v === 'false' || _v === 'true') {
+							if (_v === 'false' || _v === 'true') {
 								_v = _v === 'true'
 							}
 							data[k] = _v
@@ -224,10 +245,10 @@ const userPostData = (key, data) => dispatch => {
 		.then(() => AsyncStorage.getItem(key))
 		.then(result => {
 			let _result = JSON.parse(result)
-			if(_result === 'false' || _result === 'true') {
+			if (_result === 'false' || _result === 'true') {
 				_result = _result === 'true'
 			}
-			dispatch(userReceive({ [key]: _result}))
+			dispatch(userReceive({ [key]: _result }))
 		})
 		.catch(error => dispatch(userDenied()))
 }

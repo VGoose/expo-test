@@ -78,7 +78,7 @@ class CountdownClock extends React.Component {
 
 
   render() {
-    const { isFav, name, schedules = {}, favorite, id, fetchSchedule, isFetching, onPressItem } = this.props
+    const { isNearby, isFav, name, schedules = {}, toggleFavorite, id, fetchSchedule, isFetching, onPressItem } = this.props
     //handle 'stations' that serve no trains
     if (STATIONS[id].trains.length === 0) {
       return null
@@ -97,7 +97,8 @@ class CountdownClock extends React.Component {
           name={name}
           badges={badges}
           isFav={isFav}
-          favorite={favorite ? favorite : onPressItem} id={id} />
+          isNearby={isNearby}
+          favorite={toggleFavorite ? toggleFavorite : onPressItem} id={id} />
         {this.state.open
           ? <AnimatedRowList animatedOpacity={this.state.rowOpacity}
             schedules={_schedules}
@@ -105,21 +106,20 @@ class CountdownClock extends React.Component {
           : null}
       </Animated.View>
     )
-
-
   }
 }
 
-const Star = ({ fadeOut, favorite, id, isFav }) => {
+const Star = ({ isNearby, fadeOut, favorite, id, isFav }) => {
   return (
-    isFav
+    isFav 
       ? <TouchableHighlight
         underlayColor='transparent'
         activeOpacity={0.0}
-        onPress={() =>
-          fadeOut(() => favorite(id))
-        }
-        style={styles.starred}>
+        
+        onPress={isNearby 
+          ? () => favorite(id)
+          : () => fadeOut(() => favorite(id))
+        }>
         <Image source={require('../assets/icons/pin_a.png')} />
 
       </TouchableHighlight>
@@ -232,7 +232,7 @@ class AnimatedRowList extends React.Component {
     )
   }
 }
-const Bar = ({ fadeOut, toggle, name, badges, isFav, favorite, id, fetchSchedule }) => {
+const Bar = ({ isNearby, fadeOut, toggle, name, badges, isFav, favorite, id, fetchSchedule }) => {
   //fetchSchedule only passed when clock in collapsed state, when closing fetchSchedule will just be 
   //a blank function
   fetchSchedule ? null : fetchSchedule = () => { }
@@ -257,7 +257,7 @@ const Bar = ({ fadeOut, toggle, name, badges, isFav, favorite, id, fetchSchedule
       </View>
     </TouchableHighlight>
     <View style={styles.countdownClock_Bar_Star} >
-      <Star isFav={isFav} fadeOut={fadeOut} favorite={favorite} id={id} />
+      <Star isFav={isFav} isNearby={isNearby} fadeOut={fadeOut} favorite={favorite} id={id} />
     </View>
   </View>
   { children }
@@ -271,16 +271,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderBottomWidth: 1,
     borderBottomColor: colors.lightGrey
-    // borderRadius: 20
-
-    // shadowColor: colors.darkGrey,
-		// shadowOffset: {
-		// 	// width: 3,
-		// 	// height: 1,
-		// },
-		// shadowOpacity: .5,
-		// shadowRadius: 1,
-    // height: 140,
   },
   countdownClock_Collapsed: {
     shadowColor: colors.darkGrey,
@@ -297,8 +287,6 @@ const styles = StyleSheet.create({
 
   },
   countdownClock_Bar: {
-    // backgroundColor: 'blue',
-    
     flex: 0,
     flexDirection: 'row',
     alignItems: 'stretch',
@@ -313,7 +301,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   countdownClock_Bar_Name: {
-    // backgroundColor: 'yellow',
     flex: 5,
     justifyContent: 'center',
     paddingLeft: padding.sm,
@@ -322,7 +309,6 @@ const styles = StyleSheet.create({
     fontSize: fonts.md
   },
   countdownClock_Bar_Badges: {
-    // backgroundColor: 'green',
     flex: 2,
     flexDirection: 'row',
     alignItems: 'center',
@@ -330,7 +316,6 @@ const styles = StyleSheet.create({
   },
   countdownClock_Bar_Star: {
     flex: 1,
-    // backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'flex-end',
     paddingRight: padding.sm,
@@ -387,10 +372,6 @@ const styles = StyleSheet.create({
   badgeText__small: {
     fontSize: fonts.sm,
     color: 'white'
-  },
-  starred: {
-    // backgroundColor: 'grey',
-    // height: HEIGHT
   },
   starImage: {
     maxHeight: 40,

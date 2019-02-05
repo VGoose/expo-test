@@ -1,6 +1,8 @@
 import axios from '../utils/axios'
 import { AsyncStorage } from 'react-native'
 
+import { locateUser, locateError, setNearbyStations } from './user'
+
 export const SCHEDULE_REQUEST = 'SCHEDULE_REQUEST'
 export const SCHEDULE_RECEIVE = 'SCHEDULE_RECEIVE'
 export const SCHEDULE_ERROR = 'SCHEDULE_ERROR'
@@ -87,7 +89,19 @@ const shouldScheduleFetch = (state) => {
 }
 
 export const fetchScheduleIfNeeded = () => (dispatch, getState) => {
-	return shouldScheduleFetch(getState())
-		? dispatch(scheduleFetch())
-		: null
+	if (shouldScheduleFetch(getState())) {
+		const loc = getState().user.location
+		const lastLocationUpdated = getState().user.locationTime
+		if (!loc || (Date.now() - lastLocationUpdated) > 1000 * 60 * 5) {
+			dispatch(scheduleFetch())
+			dispatch(locateUser())
+				.then(und => {
+					dispatch(setNearbyStations(0.5))
+				})
+				.catch(error => dispatch(locateError(error)))
+		} else {
+			dispatch(scheduleFetch())
+		}
+	}
+
 }

@@ -65,7 +65,6 @@ const Option = ({ name, type, value, onChange }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: colors.grey
   },
   optionContainer: {
     height: 50,
@@ -92,7 +91,6 @@ const styles = StyleSheet.create({
   headerName: {
     fontSize: fonts.lg,
     fontWeight: '500',
-    // color: colors.darkGrey
   },
 })
 

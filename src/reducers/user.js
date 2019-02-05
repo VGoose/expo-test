@@ -21,6 +21,7 @@ const initialState = {
     isLocationEnabled: null,
     isCelsius: false,
     isNearby: true,
+    locationTime: null
 };
 
 export default function (state = initialState, action) {
@@ -52,7 +53,8 @@ export default function (state = initialState, action) {
                 location: {
                     lat: action.lat,
                     lon: action.lon,
-                }
+                },
+                locationTime: Date.now()
             }
         case USER_ERROR:
             return {

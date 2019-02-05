@@ -96,11 +96,9 @@ const styles = StyleSheet.create({
 		padding: 2
 	},
 	barContainer: {
-		// backgroundColor: 'yellow',
 		display: 'flex',
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'flex-end',
+		justifyContent: 'center',
+		alignItems: 'center',
 		height: 30,
 		padding: padding.xs,
 		borderTopLeftRadius: 5,

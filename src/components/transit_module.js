@@ -35,7 +35,7 @@ const TransitModule = ({
         key={station.stop_id}
         id={station.stop_id}
         isFetching={isFetching}
-        favorite={toggleFavorite}
+        toggleFavorite={toggleFavorite}
         schedules={[
           ...northSchedule,
           ...southSchedule
@@ -49,9 +49,10 @@ const TransitModule = ({
       northSchedule = station.stop_id + 'N' in scheduleData ? scheduleData[station.stop_id + 'N'] : [];
       southSchedule = station.stop_id + '' in scheduleData ? scheduleData[station.stop_id + 'S'] : [];
       return <CountdownClock
+        isNearby
         key={station.stop_id}
         id={station.stop_id}
-        favorite={toggleFavorite}
+        toggleFavorite={toggleFavorite}
         isFetching={isFetching}
         schedules={[
           ...northSchedule,
@@ -67,7 +68,7 @@ const TransitModule = ({
     {showNearbyStationsFirst //alignment issue with index prop of Swiper
       ? <Swiper loop={false} paginationStyle={styles.paginationStyle} style={styles.swiperContainer}>
         <View style={styles.swiperSlideContainer}>
-          <Bar header="transit: nearby stations"  />
+          <Bar header="nearby stations"  />
           <ScrollView
             contentContainerStyle={styles.scrollView}
             refreshControl={
@@ -77,7 +78,7 @@ const TransitModule = ({
           </ScrollView>
         </View>
         <View style={styles.swiperSlideContainer}>
-          <Bar header="transit: favorite stations"  />
+          <Bar header="favorite stations"  />
           <ScrollView
             contentContainerStyle={styles.scrollView}
             refreshControl={
@@ -89,7 +90,7 @@ const TransitModule = ({
       </Swiper>
       : <Swiper loop={false} paginationStyle={styles.paginationStyle} style={styles.swiperContainer}>
         <View style={styles.swiperSlideContainer}>
-          <Bar header="transit: favorite stations"  />
+          <Bar header="favorite stations"  />
           <ScrollView
             contentContainerStyle={styles.scrollView}
             refreshControl={
@@ -99,7 +100,7 @@ const TransitModule = ({
           </ScrollView>
         </View>
         <View style={styles.swiperSlideContainer}>
-          <Bar header="transit: nearby stations" />
+          <Bar header="nearby stations" />
           <ScrollView
             contentContainerStyle={styles.scrollView}
             refreshControl={
@@ -121,8 +122,6 @@ const Bar = ({ header }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // overflow: 'hidden',
-    // padding: 10,
 		shadowColor: colors.darkGrey,
 		shadowOffset: {
 			width: 3,
@@ -139,16 +138,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'flex-end',
     height: 30,
     padding: padding.xs,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    // borderBottomWidth: 2,
-    // borderColor: colors.danger
-    // marginLeft: -2,
-    // marginRight: -2
   },
   barText: {
     fontSize: fonts.md,

@@ -1,5 +1,8 @@
 import axios from '../utils/axios'
 import { AsyncStorage } from 'react-native'
+
+import { locateUser, locateError } from './user'
+
 export const weatherTypes = {
   WEATHER_REQUEST: 'WEATHER_REQUEST',
   WEATHER_RECEIVE: 'WEATHER_RECEIVE',
@@ -16,49 +19,57 @@ export const getLastWeather = () => dispatch => {
     })
 }
 const offlineSave = () => {
-	return {
-		type: weatherTypes.OFFLINE_SAVE
-	}
+  return {
+    type: weatherTypes.OFFLINE_SAVE
+  }
 }
 
 const offlineSaved = (result) => {
-	return {
-		type: weatherTypes.OFFLINE_SAVED,
-		lastState: JSON.parse(result)
-	}
+  return {
+    type: weatherTypes.OFFLINE_SAVED,
+    lastState: JSON.parse(result)
+  }
 }
 
 const offlineSaveError = (error) => {
-	return {
-		type: weatherTypes.WEATHER_ERROR,
-		error: {
-			offlineSaveError: error
-		}
-	}
+  return {
+    type: weatherTypes.WEATHER_ERROR,
+    error: {
+      offlineSaveError: error
+    }
+  }
 }
 
 const saveWeatherState = (state) => dispatch => {
-	dispatch(offlineSave())
-	AsyncStorage.setItem('weatherLastState', JSON.stringify(state))
-		.then(() => AsyncStorage.getItem('weatherLastState'))
-		.then(result => dispatch(offlineSaved(result)))
-		.catch(error => dispatch(offlineSaveError(error)))
+  dispatch(offlineSave())
+  AsyncStorage.setItem('weatherLastState', JSON.stringify(state))
+    .then(() => AsyncStorage.getItem('weatherLastState'))
+    .then(result => dispatch(offlineSaved(result)))
+    .catch(error => dispatch(offlineSaveError(error)))
 }
 export const fetchWeatherIfNeeded = () => (dispatch, getState) => {
-  const { lat, lon } = getState().user.location
-  if(shouldWeatherFetch(getState()) ) {
-    return dispatch(getWeather(lat, lon))
+  if (shouldWeatherFetch(getState())) {
+    const loc = getState().user.location
+    const lastLocationUpdated = getState().user.locationTime
+
+    if (!loc || (Date.now() - lastLocationUpdated) > 1000 * 60 * 5) {
+      return dispatch(locateUser())
+        .then(und => dispatch(getWeather(loc.lat, loc.lon))
+        )
+        .catch(error => dispatch(locateError(error)))
+    }
+    return dispatch(getWeather(loc.lat, loc.lon))
   }
-   
+
 }
 const shouldWeatherFetch = (state) => {
   const secondsSinceLastUpdate = (lastUpdated - Date.now()) * 1000
   const { isFetching, lastUpdated } = state.weather
-  
+
   if (isFetching || secondsSinceLastUpdate < 30) {
     console.log('no fetch')
-    return false 
-  }else {
+    return false
+  } else {
     console.log('yes fetch')
     return true
   }
