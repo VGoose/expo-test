@@ -23,6 +23,8 @@ const HomeScreen = ({
   isNearby,
   userError,
   isLocationEnabled,
+  locateUser,
+  setNearbyStations,
 
   //schedule props
   scheduleData = {},
@@ -53,7 +55,15 @@ const HomeScreen = ({
         refreshControl={
           <RefreshControl
             refreshing={false}
-            onRefresh={() => { fetchSchedule(), fetchWeather() }}
+            onRefresh={() => {
+              fetchSchedule()
+              fetchWeather()
+              locateUser()
+                .then(loc => {
+                  setNearbyStations()
+                })
+                .catch()
+            }}
           />
         }
       >

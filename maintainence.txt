@@ -1,0 +1,3 @@
+//build and upload
+expo build:ios
+expo upload:ios

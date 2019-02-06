@@ -55,7 +55,6 @@ class CountdownClock extends React.Component {
 
   open = () => Animated.stagger(200, [
     Animated.timing(
-      console.log('open called') ||
       this.state.height,
       {
         toValue: 140,

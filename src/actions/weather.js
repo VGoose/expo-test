@@ -1,7 +1,7 @@
 import axios from '../utils/axios'
 import { AsyncStorage } from 'react-native'
 
-import { locateUser, locateError } from './user'
+import { locateUserIfNeeded } from './user'
 
 export const weatherTypes = {
   WEATHER_REQUEST: 'WEATHER_REQUEST',
@@ -49,18 +49,12 @@ const saveWeatherState = (state) => dispatch => {
 }
 export const fetchWeatherIfNeeded = () => (dispatch, getState) => {
   if (shouldWeatherFetch(getState())) {
-    const loc = getState().user.location
-    const lastLocationUpdated = getState().user.locationTime
-
-    if (!loc || (Date.now() - lastLocationUpdated) > 1000 * 60 * 5) {
-      return dispatch(locateUser())
-        .then(und => dispatch(getWeather(loc.lat, loc.lon))
-        )
-        .catch(error => dispatch(locateError(error)))
-    }
-    return dispatch(getWeather(loc.lat, loc.lon))
+    dispatch(locateUserIfNeeded())
+      .then(loc => {
+        dispatch(getWeather(loc.lat, loc.lon))
+      })
+      .catch()
   }
-
 }
 const shouldWeatherFetch = (state) => {
   const secondsSinceLastUpdate = (lastUpdated - Date.now()) * 1000

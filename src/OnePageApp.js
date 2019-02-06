@@ -1,9 +1,8 @@
 "use strict";
 import React from 'react'
-import { AppState, StyleSheet, ActivityIndicator } from 'react-native'
+import { AppState, StyleSheet } from 'react-native'
 import store from './store'
 import { Provider } from 'react-redux'
-import { connect } from 'react-redux'
 
 import AppNav from './navigation'
 import startUpFetch from './start_up'

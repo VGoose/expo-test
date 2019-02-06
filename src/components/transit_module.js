@@ -74,7 +74,10 @@ const TransitModule = ({
             refreshControl={
               <RefreshControl refreshing={isFetching} onRefresh={fetchSchedule} />}
           >
-            {nearbyStationCountdowns}
+            {nearbyStationCountdowns.length === 0 
+              ? <Text style={styles.noNearbyText}>There are no stations nearby.</Text>
+              : nearbyStationCountdowns
+            }
           </ScrollView>
         </View>
         <View style={styles.swiperSlideContainer}>
@@ -171,6 +174,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     padding: padding.sm,
     backgroundColor: 'transparent',
+  },
+  noNearbyText: {
+    textAlign: 'center',
+    paddingTop: padding.md,
   }
 })
 

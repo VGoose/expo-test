@@ -3,9 +3,8 @@ import { fetchWeatherIfNeeded, getLastWeather } from './actions/weather'
 import { fetchScheduleIfNeeded, getLastSchedule } from './actions/schedule'
 import { checkConnection, hideSpinner } from './actions/meta'
 import {
-	locateUser,
+	locateUserIfNeeded,
 	locateError,
-	userLocated,
 	setNearbyStations,
 	askLocationPermission,
 	fetchUserIfNeeded,
@@ -24,7 +23,7 @@ function fetchData() {
 		store.dispatch(fetchScheduleIfNeeded()),
 		store.dispatch(askLocationPermission()),
 		store.dispatch(fetchUserIfNeeded()),
-		store.dispatch(locateUser())
+		store.dispatch(locateUserIfNeeded())
 			.then(und => {
 				store.dispatch(fetchWeatherIfNeeded())
 				store.dispatch(setNearbyStations(0.5))

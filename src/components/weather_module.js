@@ -20,15 +20,21 @@ const WeatherModule = ({ isFetching, weatherError, city, currentForecast, hourly
 			</View>
 			: isFetching
 				? <View style={styles.container}><Bar /></View>
-				: <View style={styles.container}>
-					<Bar city={city} />
-					<SnapshotList
-						// isStale={isStale}
-						hourly={_hourlyForecast}
-						isCelsius={isCelsius}
-						current={currentForecast}
-					/>
-				</View>
+				: _hourlyForecast.length === 0
+					? <View style={styles.container}>
+						<Bar />
+						<Text style={styles.noDataText}>
+							No weather data currently available.
+						</Text>
+					</View>
+					: <View style={styles.container}>
+						<Bar city={city} />
+						<SnapshotList
+							hourly={_hourlyForecast}
+							isCelsius={isCelsius}
+							current={currentForecast}
+						/>
+					</View>
 	)
 }
 
@@ -58,13 +64,13 @@ const SnapshotList = ({ isStale = false, hourly, current, isCelsius }) => {
 	const snaps = [currentSnap, ...hourlySnaps]
 	return (
 		// isStale
-			// ? <ScrollView horizontal contentContainerStyle={{ ...styles.snapshotListContainer, borderColor: colors.warning }}>
-			// 	{hourlySnaps}
-			// </ScrollView>
-			<ScrollView horizontal contentContainerStyle={{ ...styles.snapshotListContainer }}>
-				{/* fix flashing issue with only current snap showing */}
-				{snaps.length > 1 ? snaps : null}
-			</ScrollView>
+		// ? <ScrollView horizontal contentContainerStyle={{ ...styles.snapshotListContainer, borderColor: colors.warning }}>
+		// 	{hourlySnaps}
+		// </ScrollView>
+		<ScrollView horizontal contentContainerStyle={{ ...styles.snapshotListContainer }}>
+			{/* fix flashing issue with only current snap showing */}
+			{snaps.length > 1 ? snaps : null}
+		</ScrollView>
 	)
 }
 const Bar = ({ city }) => {
@@ -148,6 +154,10 @@ const styles = StyleSheet.create({
 	},
 	errorText: {
 		fontSize: fonts.md
+	},
+	noDataText: {
+		textAlign: 'center',
+		paddingTop: padding.md,
 	}
 })
 export default WeatherModule

@@ -5,8 +5,6 @@ import { Location, Permissions } from 'expo'
 import STATIONS from '../static/stations.json'
 import { diff, getEuclideanDist } from '../utils/helpers'
 
-import { fetchWeatherIfNeeded } from './weather'
-
 //USERS
 export const userTypes = {
 	USER_REQUEST: 'USER_REQUEST',
@@ -76,22 +74,14 @@ const receivePermission = (isGranted) => {
 }
 
 export const setNearbyStations = (rad) => (dispatch, getState) => {
-	const loc = getState().user.location
-	const lastLocationUpdated = getState().user.locationTime
-
-	//handle when user manually enable location & update location if >5 min since last locate 
-	if (!loc || (Date.now() - lastLocationUpdated) > 1000 * 60 * 5) {
-		dispatch(locateUser())
-			.then(und => {
-				const stations = getNearbyStations(loc.lat, loc.lon, rad)
-				dispatch(userReceive({ nearbyStations: stations }))
-			})
-			.catch(error => dispatch(locateError(error)))
-	}else {
-		const stations = getNearbyStations(loc.lat, loc.lon, rad)
-		dispatch(userReceive({ nearbyStations: stations }))
-	}
+	dispatch(locateUserIfNeeded())
+		.then(loc => {
+			const stations = getNearbyStations(loc.lat, loc.lon, rad)
+			dispatch(userReceive({ nearbyStations: stations }))
+		})
+		.catch()
 }
+
 const getNearbyStations = (lat, lon, rad) => {
 	let x, y, dist
 	const dists = new Set()
@@ -153,13 +143,25 @@ export const locateError = (error) => dispatch => {
 		}
 	}
 }
-export const locateUser = () => (dispatch, getState) => {
-	dispatch(userLocate())
-	return Location.getCurrentPositionAsync({ enableHighAccuracy: false })
-		.then(pos => {
-			dispatch(locateError(null))
-			dispatch(userLocated(pos.coords.latitude, pos.coords.longitude))
-		})
+export const locateUserIfNeeded = () => (dispatch, getState) => {
+	const loc = getState().user.location
+	const lastLocationUpdated = getState().user.locationTime
+	//handle when user manually enable location & update location if >5 min since last locate 
+	if (!loc || (Date.now() - lastLocationUpdated) > 1000 * 60 * 5) {
+		dispatch(userLocate())
+		return Location.getCurrentPositionAsync({ enableHighAccuracy: false })
+			.then(pos => {
+				dispatch(locateError(null))
+				dispatch(userLocated(pos.coords.latitude, pos.coords.longitude))
+				return Promise.resolve(getState().user.location)
+			})
+			.catch(error => {
+				dispatch(locateError(error))
+				return Promise.reject()
+			})
+	} else {
+		return Promise.resolve(loc)
+	}
 }
 
 const userRequest = () => {

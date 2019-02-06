@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 
 import HomeScreen from '../components/home_screen'
 
-import { userToggleFavorite, fetchUserIfNeeded } from '../actions/user'
+import { userToggleFavorite, fetchUserIfNeeded, locateUserIfNeeded, setNearbyStations } from '../actions/user'
 import { fetchScheduleIfNeeded } from '../actions/schedule'
 import { fetchWeatherIfNeeded } from '../actions/weather'
 
@@ -43,6 +43,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     toggleFavorite: id => dispatch(userToggleFavorite(id)),
     fetchUser: () => dispatch(fetchUserIfNeeded()),
+    locateUser: () => dispatch(locateUserIfNeeded()),
+    setNearbyStations: () => dispatch(setNearbyStations(0.5)),
 
     fetchSchedule: () => dispatch(fetchScheduleIfNeeded()),
 
