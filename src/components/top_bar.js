@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
   timeContainer: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    paddingTop: padding.sm,
   },
   dayText: {
     textAlign: 'center',

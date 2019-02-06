@@ -5,10 +5,7 @@ import { Snapshot, CurrentSnapshot } from './snapshot'
 import { padding, margin, fonts, colors } from '../styles/base'
 
 const WeatherModule = ({ isFetching, weatherError, city, currentForecast, hourlyForecast, isCelsius }) => {
-	//let data be "fresh" for 5 minutes/300 seconds
-	// const bufferTime = (parseInt(currentForecast.time || 0) + 300) * 1000
-	// const isStale = Date.now() > bufferTime
-	const _hourlyForecast = hourlyForecast.filter(f => (f.time * 1000) + 60 * 60 * 1000 > Date.now())
+	const _hourlyForecast = hourlyForecast.filter(f => (f.time * 1000)  > Date.now())
 
 	return (
 		weatherError && _hourlyForecast.length === 0
