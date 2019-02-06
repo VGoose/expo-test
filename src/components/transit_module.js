@@ -37,8 +37,8 @@ const TransitModule = ({
         isFetching={isFetching}
         toggleFavorite={toggleFavorite}
         schedules={[
-          ...northSchedule,
-          ...southSchedule
+          ...southSchedule,
+          ...northSchedule
         ]}
         isFav
         name={station.stop_name}
@@ -47,7 +47,7 @@ const TransitModule = ({
   const nearbyStationCountdowns = nearbyStations
     .map((station) => {
       northSchedule = station.stop_id + 'N' in scheduleData ? scheduleData[station.stop_id + 'N'] : [];
-      southSchedule = station.stop_id + '' in scheduleData ? scheduleData[station.stop_id + 'S'] : [];
+      southSchedule = station.stop_id + 'S' in scheduleData ? scheduleData[station.stop_id + 'S'] : [];
       return <CountdownClock
         isNearby
         key={station.stop_id}
