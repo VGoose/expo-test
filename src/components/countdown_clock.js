@@ -84,10 +84,7 @@ class CountdownClock extends React.Component {
     }
     const badges = STATIONS[id].trains
       .map(train => <Badge key={train} train={train} />)
-    const _schedules = schedules
-      .filter(schedule => new Date(schedule.time) - Date.now() > 0)
-      .sort((a, b) => new Date(a.time) - new Date(b.time))
-      .slice(0, 3)
+
     return (
       <Animated.View style={{ ...styles.countdownClock, height: this.state.height, opacity: this.state.opacity }}>
         <Bar
@@ -100,7 +97,7 @@ class CountdownClock extends React.Component {
           favorite={toggleFavorite ? toggleFavorite : onPressItem} id={id} />
         {this.state.open
           ? <AnimatedRowList animatedOpacity={this.state.rowOpacity}
-            schedules={_schedules}
+            schedules={schedules}
             isFetching={isFetching} />
           : null}
       </Animated.View>
@@ -110,12 +107,12 @@ class CountdownClock extends React.Component {
 
 const Star = ({ isNearby, fadeOut, favorite, id, isFav }) => {
   return (
-    isFav 
+    isFav
       ? <TouchableHighlight
         underlayColor='transparent'
         activeOpacity={0.0}
-        
-        onPress={isNearby 
+
+        onPress={isNearby
           ? () => favorite(id)
           : () => fadeOut(() => favorite(id))
         }>
@@ -178,34 +175,6 @@ const Badge = ({ train, isRowBadge }) => {
   )
 }
 
-const Row = ({ animatedOpacity, schedule, index }) => {
-  return (
-    <Time>
-      {({ time }) => {
-        let seconds = Math.floor((new Date(schedule.time) - time) / 1000);
-        let minutes = Math.floor(seconds / 60);
-        let countdown = seconds > 60 ? minutes : seconds > 30 ? seconds : 'now';
-        return (
-          <Animated.View
-            style={{
-              ...styles.row,
-              opacity: animatedOpacity,
-
-              // borderBottomLeftRadius: index === 2 ? 5 : 0,
-              // borderBottomRightRadius: index === 2 ? 5 : 0,
-            }}
-          >
-            <View style={styles.row_left}>
-
-              <Badge isRowBadge train={schedule.train} />
-              <Text style={styles.row_headsign}>{schedule.headsign}</Text>
-            </View>
-            <Text style={styles.row_time}>{countdown} {seconds > 60 ? 'min' : Number.isInteger(seconds) && seconds > 30 ? 'sec' : null}</Text>
-          </Animated.View>)
-      }}
-    </Time>
-  )
-}
 class AnimatedRowList extends React.Component {
   //TODO add spinner
   render() {
@@ -215,21 +184,51 @@ class AnimatedRowList extends React.Component {
         <Text style={styles.loadingText}>Loading...</Text>
       </View>
     }
-    let rows = schedules
-      .map((schedule, index) => (
-        <Row
-          animatedOpacity={this.props.animatedOpacity}
-          key={schedule.train + schedule.direction + schedule.time + index}
-          schedule={schedule}
-          index={index}
-        />
-      ))
     return (
-      < View style={styles.rowContainer} >
-        {rows}
-      </View>
+      <Time>
+        {({ time }) => {
+          const _schedules = schedules
+            .filter(schedule => new Date(schedule.time) - time > 0)
+            .sort((a, b) => new Date(a.time) - new Date(b.time))
+            .slice(0, 3)
+          let rows = _schedules
+            .map((schedule, index) => (
+              <Row
+                animatedOpacity={this.props.animatedOpacity}
+                key={schedule.train + schedule.direction + schedule.time + index}
+                schedule={schedule}
+                index={index}
+                time={time}
+              />
+            ))
+          return < View style={styles.rowContainer} >
+            {rows}
+          </View>
+        }}
+      </Time>
     )
   }
+}
+const Row = ({ animatedOpacity, schedule, index, time }) => {
+  let seconds = Math.floor((new Date(schedule.time) - time) / 1000);
+  let minutes = Math.floor(seconds / 60);
+  let countdown = seconds >= 60 ? minutes : seconds > 30 ? seconds : 'now';
+  return (
+
+    <Animated.View
+      style={{
+        ...styles.row,
+        opacity: animatedOpacity,
+      }}
+    >
+      <View style={styles.row_left}>
+
+        <Badge isRowBadge train={schedule.train} />
+        <Text style={styles.row_headsign}>{schedule.headsign}</Text>
+      </View>
+      <Text style={styles.row_time}>{countdown} {seconds > 60 ? 'min' : Number.isInteger(seconds) && seconds > 30 ? 'sec' : null}</Text>
+    </Animated.View>
+  )
 }
 const Bar = ({ isNearby, fadeOut, toggle, name, badges, isFav, favorite, id, fetchSchedule }) => {
   //fetchSchedule only passed when clock in collapsed state, when closing fetchSchedule will just be 
@@ -273,12 +272,12 @@ const styles = StyleSheet.create({
   },
   countdownClock_Collapsed: {
     shadowColor: colors.darkGrey,
-		shadowOffset: {
-			width: 3,
-			height: 3,
-		},
-		shadowOpacity: .5,
-		shadowRadius: 3,
+    shadowOffset: {
+      width: 3,
+      height: 3,
+    },
+    shadowOpacity: .5,
+    shadowRadius: 3,
     backgroundColor: colors.white,
     borderBottomWidth: 1,
     borderColor: colors.lightGrey,
