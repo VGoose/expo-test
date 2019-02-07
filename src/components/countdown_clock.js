@@ -212,7 +212,7 @@ class AnimatedRowList extends React.Component {
     const { isFetching, schedules } = this.props
     if (isFetching) {
       return <View style={styles.rowContainer}>
-        <Text>Loading...</Text>
+        <Text style={styles.loadingText}>Loading...</Text>
       </View>
     }
     let rows = schedules
@@ -323,6 +323,10 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 90,
     backgroundColor: colors.lightGrey
+  },
+  loadingText: {
+    textAlign: 'center',
+    paddingTop: padding.sm
   },
   row: {
     flex: 1,
