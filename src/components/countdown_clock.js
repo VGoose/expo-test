@@ -226,7 +226,7 @@ const Row = ({ animatedOpacity, schedule, index, time }) => {
         <Badge isRowBadge train={schedule.train} />
         <Text style={styles.row_headsign}>{schedule.headsign}</Text>
       </View>
-      <Text style={styles.row_time}>{countdown} {seconds > 60 ? 'min' : Number.isInteger(seconds) && seconds > 30 ? 'sec' : null}</Text>
+      <Text style={styles.row_time}>{countdown} {seconds >= 60 ? 'min' : Number.isInteger(seconds) && seconds > 30 ? 'sec' : null}</Text>
     </Animated.View>
   )
 }
