@@ -20,7 +20,7 @@ const TransitModule = ({
   const isEmpty = Object.entries(scheduleData).length === 0 && scheduleData.constructor === Object
 
   //make countdown clocks from schedule scheduleData
-  
+
   let northSchedule, southSchedule
   const _isFav = (id) => {
     return favoriteStations.some((station) => id === station.stop_id)
@@ -32,6 +32,7 @@ const TransitModule = ({
       northSchedule = station.stop_id + 'N' in scheduleData ? scheduleData[station.stop_id + 'N'] : [];
       southSchedule = station.stop_id + 'S' in scheduleData ? scheduleData[station.stop_id + 'S'] : [];
       return <CountdownClock
+        defaultOpen
         key={station.stop_id}
         id={station.stop_id}
         isFetching={isFetching}
@@ -45,10 +46,11 @@ const TransitModule = ({
       />
     })
   const nearbyStationCountdowns = nearbyStations
-    .map((station) => {
+    .map((station, index) => {
       northSchedule = station.stop_id + 'N' in scheduleData ? scheduleData[station.stop_id + 'N'] : [];
       southSchedule = station.stop_id + 'S' in scheduleData ? scheduleData[station.stop_id + 'S'] : [];
       return <CountdownClock
+        defaultOpen={index == 0 ? true : false}
         isNearby
         key={station.stop_id}
         id={station.stop_id}
@@ -64,24 +66,24 @@ const TransitModule = ({
     })
 
 
-  return <View style={{...styles.container}}>
+  return <View style={{ ...styles.container }}>
     {showNearbyStationsFirst //alignment issue with index prop of Swiper
       ? <Swiper loop={false} paginationStyle={styles.paginationStyle} style={styles.swiperContainer}>
         <View style={styles.swiperSlideContainer}>
-          <Bar header="nearby stations"  />
+          <Bar header="nearby stations" />
           <ScrollView
             contentContainerStyle={styles.scrollView}
             refreshControl={
               <RefreshControl refreshing={isFetching} onRefresh={fetchSchedule} />}
           >
-            {nearbyStationCountdowns.length === 0 
+            {nearbyStationCountdowns.length === 0
               ? <Text style={styles.noNearbyText}>There are no stations nearby.</Text>
               : nearbyStationCountdowns
             }
           </ScrollView>
         </View>
         <View style={styles.swiperSlideContainer}>
-          <Bar header="favorite stations"  />
+          <Bar header="favorite stations" />
           <ScrollView
             contentContainerStyle={styles.scrollView}
             refreshControl={
@@ -96,7 +98,7 @@ const TransitModule = ({
       </Swiper>
       : <Swiper loop={false} paginationStyle={styles.paginationStyle} style={styles.swiperContainer}>
         <View style={styles.swiperSlideContainer}>
-          <Bar header="favorite stations"  />
+          <Bar header="favorite stations" />
           <ScrollView
             contentContainerStyle={styles.scrollView}
             refreshControl={
@@ -115,7 +117,7 @@ const TransitModule = ({
             refreshControl={
               <RefreshControl refreshing={false} onRefresh={fetchSchedule} />}
           >
-            {nearbyStationCountdowns.length === 0 
+            {nearbyStationCountdowns.length === 0
               ? <Text style={styles.noNearbyText}>There are no stations nearby.</Text>
               : nearbyStationCountdowns
             }}
@@ -134,20 +136,20 @@ const Bar = ({ header }) => {
 
 const styles = StyleSheet.create({
   container: {
-		shadowColor: colors.darkGrey,
-		shadowOffset: {
-			width: 3,
-			height: 3,
-		},
-		shadowOpacity: .5,
-		shadowRadius: 3,
+    shadowColor: colors.darkGrey,
+    shadowOffset: {
+      width: 3,
+      height: 3,
+    },
+    shadowOpacity: .5,
+    shadowRadius: 3,
     flex: 1,
     backgroundColor: colors.white,
     margin: margin.md,
     borderRadius: 10,
   },
   barContainer: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.lightGrey,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',

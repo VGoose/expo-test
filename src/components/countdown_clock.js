@@ -8,15 +8,21 @@ import Time from './reusable/time';
 import STATIONS from '../static/stations.json';
 
 class CountdownClock extends React.Component {
-
-  state = {
-    rowOpacity: new Animated.Value(0),
-    height: new Animated.Value(50),
-    opacity: new Animated.Value(0),
-    open: false
+  constructor(props) {
+    super(props)
+    this.state = {
+      rowOpacity: new Animated.Value(0),
+      height: new Animated.Value(50),
+      opacity: new Animated.Value(0),
+      open: false,
+      defaultOpen: this.props.defaultOpen
+    }
   }
   componentDidMount() {
     this.barFadeIn()
+    if (this.props.defaultOpen) {
+      this.open()
+    }
   }
 
   barFadeIn = () => Animated.timing(
@@ -57,7 +63,7 @@ class CountdownClock extends React.Component {
     Animated.timing(
       this.state.height,
       {
-        toValue: 140,
+        toValue: 170,
         duration: 250
       }
     ),
@@ -96,7 +102,8 @@ class CountdownClock extends React.Component {
           isNearby={isNearby}
           favorite={toggleFavorite ? toggleFavorite : onPressItem} id={id} />
         {this.state.open
-          ? <AnimatedRowList animatedOpacity={this.state.rowOpacity}
+          ? <AnimatedRowList
+            animatedOpacity={this.state.rowOpacity}
             schedules={schedules}
             isFetching={isFetching} />
           : null}
@@ -190,7 +197,7 @@ class AnimatedRowList extends React.Component {
           const _schedules = schedules
             .filter(schedule => new Date(schedule.time) - time > 0)
             .sort((a, b) => new Date(a.time) - new Date(b.time))
-            .slice(0, 3)
+            .slice(0, 4)
           let rows = _schedules
             .map((schedule, index) => (
               <Row
@@ -224,9 +231,15 @@ const Row = ({ animatedOpacity, schedule, index, time }) => {
       <View style={styles.row_left}>
 
         <Badge isRowBadge train={schedule.train} />
-        <Text style={styles.row_headsign}>{schedule.headsign}</Text>
+        <Text
+          numberOfLines={1}
+          style={styles.row_headsign}
+          ellipsizeMode='tail'
+        >{schedule.headsign}</Text>
       </View>
-      <Text style={styles.row_time}>{countdown} {seconds >= 60 ? 'min' : Number.isInteger(seconds) && seconds > 30 ? 'sec' : null}</Text>
+      <View style={styles.row_time}>
+        <Text style={styles.row_time_text}>{countdown} {seconds >= 60 ? 'min' : Number.isInteger(seconds) && seconds > 30 ? 'sec' : null}</Text>
+      </View>
     </Animated.View>
   )
 }
@@ -320,7 +333,7 @@ const styles = StyleSheet.create({
   },
   rowContainer: {
     flex: 1,
-    height: 90,
+    height: 120,
     backgroundColor: colors.lightGrey
   },
   loadingText: {
@@ -337,16 +350,24 @@ const styles = StyleSheet.create({
     paddingRight: padding.sm
   },
   row_left: {
+    flex: 8,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center'
   },
   row_headsign: {
+    fontSize: fonts.md * 1.15,
     paddingLeft: padding.sm,
+    paddingRight: padding.md,
 
   },
   row_time: {
-
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'flex-end'
+  },
+  row_time_text: {
+    fontSize: fonts.md * 1.15
   },
   badge: {
     borderRadius: 11,

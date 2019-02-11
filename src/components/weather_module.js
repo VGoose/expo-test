@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
 		height: 170,
 		margin: margin.md,
 		borderRadius: 10,
-		padding: 2
+
 	},
 	barContainer: {
 		display: 'flex',
@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
 		padding: padding.xs,
 		borderTopLeftRadius: 5,
 		borderTopRightRadius: 5,
+		backgroundColor: colors.lightGrey
 	},
 	barText: {
 		fontSize: fonts.md
@@ -126,13 +127,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 
 	},
-	currentSnapshotContainer: {
-		borderTopWidth: 1,
-		borderBottomWidth: 1,
-		borderColor: colors.darkGrey,
-		display: 'flex',
-		flexDirection: 'row',
-	},
+
 	CurrentSnapshotTempText: {
 
 	},

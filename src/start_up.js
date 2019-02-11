@@ -37,7 +37,6 @@ export default startUpFetch = () => {
 			if (store.getState().connectionType === 'none') {
 				return offlineFetch()
 			} else {
-				console.log('startUp fetching')
 				return fetchData()
 			}
 		})

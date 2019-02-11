@@ -55,6 +55,7 @@ error on one feed req means having to request all
 
 searchbar not focusing after first render
 
+flatlist rendered items don't update props while they're rendered(?)
 
 use refs to get height of transitmodule
 
