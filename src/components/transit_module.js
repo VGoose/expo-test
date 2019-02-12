@@ -68,7 +68,11 @@ const TransitModule = ({
 
   return <View style={{ ...styles.container }}>
     {showNearbyStationsFirst //alignment issue with index prop of Swiper
-      ? <Swiper loop={false} paginationStyle={styles.paginationStyle} style={styles.swiperContainer}>
+      ? <Swiper
+        loop={false}
+        paginationStyle={styles.paginationStyle}
+        style={styles.swiperContainer}
+      >
         <View style={styles.swiperSlideContainer}>
           <Bar header="nearby stations" />
           <ScrollView

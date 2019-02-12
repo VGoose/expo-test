@@ -41,4 +41,5 @@ export default startUpFetch = () => {
 			}
 		})
 		.then(() => store.dispatch(hideSpinner()))
+		.catch(error => store.dispatch(hideSpinner()))
 }

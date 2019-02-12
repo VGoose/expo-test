@@ -51,6 +51,16 @@ null is not an object - getState.user.location.lat
 bug: location denied -> no nearby stations -> enable -> can't display nearby sts
   -fix: add getnearby stations to schedule fetch
 //NOT DONE ----------------
+
+android issues: 
+  swiper conjoined
+  location issue -- fixed with high accuracy 
+  statusbar issue
+  backbutton always goes to home
+  crashing with transit data
+  no box shadow
+
+
 error on one feed req means having to request all 
 
 searchbar not focusing after first render

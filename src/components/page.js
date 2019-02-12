@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, StatusBar } from 'react-native'
+import { View, StyleSheet, StatusBar, Platform } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import TopBar from './top_bar'
 
@@ -19,6 +19,7 @@ const Page = ({ children, pageName }) => {
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: Platform.OS === 'ios' ? 0 : 30,
     flex: 1,
     alignItems: 'stretch',
     justifyContent: 'flex-start',
