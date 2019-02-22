@@ -67,7 +67,7 @@ const TransitModule = ({
 
 
   return <View style={{ ...styles.container }}>
-    {showNearbyStationsFirst //alignment issue with index prop of Swiper
+    {showNearbyStationsFirst
       ? <Swiper
         loop={false}
         paginationStyle={styles.paginationStyle}
@@ -117,7 +117,7 @@ const TransitModule = ({
             {favoriteStationsCountdowns.length === 0
               ? <Text style={styles.noNearbyText}>You haven't added any stations to your favorites.  Press on the station pins to add stations to your list.</Text>
               : favoriteStationsCountdowns
-            }}
+            }
           </ScrollView>
         </View>
         <View style={styles.swiperSlideContainer}>
@@ -132,7 +132,7 @@ const TransitModule = ({
             {nearbyStationCountdowns.length === 0
               ? <Text style={styles.noNearbyText}>There are no stations nearby.</Text>
               : nearbyStationCountdowns
-            }}
+            }
           </ScrollView>
         </View>
       </Swiper>}

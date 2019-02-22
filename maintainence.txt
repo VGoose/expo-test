@@ -1,3 +1,5 @@
 //build and upload
-expo build:ios
-expo upload:ios
+1. increment build 
+2. expo build:ios
+3. expo upload:ios
+
