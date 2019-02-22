@@ -270,3 +270,4 @@ const shouldUserPost = (state) => {
 	}
 	return true
 }
+

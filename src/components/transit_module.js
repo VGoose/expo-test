@@ -78,7 +78,9 @@ const TransitModule = ({
           <ScrollView
             contentContainerStyle={styles.scrollView}
             refreshControl={
-              <RefreshControl refreshing={isFetching} onRefresh={fetchSchedule} />}
+              <RefreshControl
+                // refreshing={isFetching} 
+                onRefresh={fetchSchedule} />}
           >
             {nearbyStationCountdowns.length === 0
               ? <Text style={styles.noNearbyText}>There are no stations nearby.</Text>
@@ -91,7 +93,9 @@ const TransitModule = ({
           <ScrollView
             contentContainerStyle={styles.scrollView}
             refreshControl={
-              <RefreshControl refreshing={false} onRefresh={fetchSchedule} />}
+              <RefreshControl
+                // refreshing={false} 
+                onRefresh={fetchSchedule} />}
           >
             {favoriteStationsCountdowns.length === 0
               ? <Text style={styles.noNearbyText}>You haven't added any stations to your favorites.  Press on the station pins to add stations to your list.</Text>
@@ -106,7 +110,9 @@ const TransitModule = ({
           <ScrollView
             contentContainerStyle={styles.scrollView}
             refreshControl={
-              <RefreshControl refreshing={false} onRefresh={fetchSchedule} />}
+              <RefreshControl
+                // refreshing={false} 
+                onRefresh={fetchSchedule} />}
           >
             {favoriteStationsCountdowns.length === 0
               ? <Text style={styles.noNearbyText}>You haven't added any stations to your favorites.  Press on the station pins to add stations to your list.</Text>
@@ -119,7 +125,9 @@ const TransitModule = ({
           <ScrollView
             contentContainerStyle={styles.scrollView}
             refreshControl={
-              <RefreshControl refreshing={false} onRefresh={fetchSchedule} />}
+              <RefreshControl
+                // refreshing={false} 
+                onRefresh={fetchSchedule} />}
           >
             {nearbyStationCountdowns.length === 0
               ? <Text style={styles.noNearbyText}>There are no stations nearby.</Text>
