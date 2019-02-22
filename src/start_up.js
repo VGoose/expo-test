@@ -24,10 +24,6 @@ function fetchData() {
 		store.dispatch(askLocationPermission()),
 		store.dispatch(fetchUserIfNeeded()),
 		store.dispatch(locateUserIfNeeded())
-			.then(und => {
-				store.dispatch(fetchWeatherIfNeeded())
-				store.dispatch(setNearbyStations(0.5))
-			})
 			.catch(err => store.dispatch(locateError(err)))
 	])
 }
@@ -39,6 +35,10 @@ export default startUpFetch = () => {
 			} else {
 				return fetchData()
 			}
+		})
+		.then(() => {
+			store.dispatch(setNearbyStations(0.5))
+			return store.dispatch(fetchWeatherIfNeeded())
 		})
 		.then(() => store.dispatch(hideSpinner()))
 		.catch(error => store.dispatch(hideSpinner()))

@@ -49,9 +49,9 @@ const saveWeatherState = (state) => dispatch => {
 }
 export const fetchWeatherIfNeeded = () => (dispatch, getState) => {
   if (shouldWeatherFetch(getState())) {
-    dispatch(locateUserIfNeeded())
+    return dispatch(locateUserIfNeeded())
       .then(loc => {
-        dispatch(getWeather(loc.lat, loc.lon))
+        return dispatch(getWeather(loc.lat, loc.lon))
       })
       .catch()
   }

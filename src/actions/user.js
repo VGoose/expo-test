@@ -74,7 +74,7 @@ const receivePermission = (isGranted) => {
 }
 
 export const setNearbyStations = (rad) => (dispatch, getState) => {
-	dispatch(locateUserIfNeeded())
+	return dispatch(locateUserIfNeeded())
 		.then(loc => {
 			const stations = getNearbyStations(loc.lat, loc.lon, rad)
 			dispatch(userReceive({ nearbyStations: stations }))

@@ -89,6 +89,6 @@ const shouldScheduleFetch = (state) => {
 
 export const fetchScheduleIfNeeded = () => (dispatch, getState) => {
 	if (shouldScheduleFetch(getState())) {
-		dispatch(scheduleFetch())
+		return dispatch(scheduleFetch())
 	}
 }

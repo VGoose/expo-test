@@ -54,8 +54,8 @@ bug: location denied -> no nearby stations -> enable -> can't display nearby sts
 
 android issues: 
   swiper conjoined
-  location issue -- fixed with high accuracy 
-  statusbar issue
+  location issue - fixed with high accuracy 
+  statusbar issue - fixed with Platform.os
   backbutton always goes to home
   crashing with transit data
   no box shadow
