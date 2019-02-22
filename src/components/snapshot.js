@@ -56,7 +56,7 @@ const Temp = ({ temp, apTemp, isCelsius }) => {
 }
 const Time = ({ time, min }) => {
     const hour = time.getHours()
-    const _min = time.getMinutes()
+    const _min = time.getMinutes() < 10 ? `0${time.getMinutes()}` : `${time.getMinutes()}`
     let disp, sign
     hour >= 12 ? sign = 'PM' : sign = 'AM'
     if (hour > 12) {
