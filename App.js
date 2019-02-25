@@ -1,12 +1,12 @@
 "use strict";
 
 import React from 'react'
-import OnePageApp from './src/OnePageApp';
+import GoGoNow from './src/gogonow';
 
 export default class App extends React.Component {
   render() {
     return (
-      <OnePageApp />
+      <GoGoNow />
     )
   }
 }
