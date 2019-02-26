@@ -18,7 +18,5 @@ const STATIONS = require('./stations.json');
   }
   fs.writeFile('src/static/parentStations.json', JSON.stringify(parentStations), 'utf8', (error) => {
 		if (error) throw error;
-		console.log('data written');
   })
-  console.log('a')
 })()

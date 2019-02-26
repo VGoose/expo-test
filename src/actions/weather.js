@@ -61,10 +61,8 @@ const shouldWeatherFetch = (state) => {
   const { isFetching, lastUpdated } = state.weather
 
   if (isFetching || secondsSinceLastUpdate < 30) {
-    console.log('no fetch')
     return false
   } else {
-    console.log('yes fetch')
     return true
   }
 }
