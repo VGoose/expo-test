@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native'
-import Swiper from 'react-native-swiper'
+import Carousel from 'react-native-looped-carousel'
 
 import CountdownClock from './countdown_clock'
 import { padding, fonts, colors, margin } from '../styles/base'
