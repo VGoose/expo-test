@@ -5,7 +5,7 @@ import { Snapshot, CurrentSnapshot } from './snapshot'
 import { padding, margin, fonts, colors } from '../styles/base'
 
 const WeatherModule = ({ isFetching, weatherError, city, currentForecast, hourlyForecast, isCelsius }) => {
-	const _hourlyForecast = hourlyForecast.filter(f => (f.time * 1000)  > Date.now())
+	const _hourlyForecast = hourlyForecast.filter(f => (f.time * 1000) > Date.now())
 
 	return (
 		weatherError && _hourlyForecast.length === 0
@@ -15,23 +15,23 @@ const WeatherModule = ({ isFetching, weatherError, city, currentForecast, hourly
 					<Text style={styles.errorText}>We're having network issues.  Please try again later.</Text>
 				</View>
 			</View>
-			: isFetching
-				? <View style={styles.container}><Bar /></View>
-				: _hourlyForecast.length === 0
-					? <View style={styles.container}>
-						<Bar />
-						<Text style={styles.noDataText}>
-							No weather data currently available.
+			// : isFetching
+			// 	? <View style={styles.container}><Bar /></View>
+			: _hourlyForecast.length === 0
+				? <View style={styles.container}>
+					<Bar />
+					<Text style={styles.noDataText}>
+						No weather data currently available.
 						</Text>
-					</View>
-					: <View style={styles.container}>
-						<Bar city={city} />
-						<SnapshotList
-							hourly={_hourlyForecast}
-							isCelsius={isCelsius}
-							current={currentForecast}
-						/>
-					</View>
+				</View>
+				: <View style={styles.container}>
+					<Bar city={city} />
+					<SnapshotList
+						hourly={_hourlyForecast}
+						isCelsius={isCelsius}
+						current={currentForecast}
+					/>
+				</View>
 	)
 }
 
@@ -78,13 +78,9 @@ const Bar = ({ city }) => {
 		</View>
 	)
 }
-
-
-
-
-
 const styles = StyleSheet.create({
 	container: {
+		elevation: 5,
 		shadowColor: colors.darkGrey,
 		shadowOffset: {
 			width: 3,

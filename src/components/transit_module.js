@@ -1,141 +1,130 @@
 import React from 'react'
-import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native'
-import Swiper from 'react-native-swiper'
+import { View, Text, StyleSheet, ScrollView, RefreshControl, Dimensions } from 'react-native'
+import Carousel from 'react-native-looped-carousel'
 
 import CountdownClock from './countdown_clock'
 import { padding, fonts, colors, margin } from '../styles/base'
 
 
-const TransitModule = ({
-  isNearby: showNearbyStationsFirst,
-  scheduleLastUpdated,
-
-  scheduleData = {},
-  isFetching,
-  favoriteStations,
-  nearbyStations,
-  toggleFavorite,
-  fetchSchedule }) => {
-
-  const isEmpty = Object.entries(scheduleData).length === 0 && scheduleData.constructor === Object
-
-  //make countdown clocks from schedule scheduleData
-
-  let northSchedule, southSchedule
-  const _isFav = (id) => {
-    return favoriteStations.some((station) => id === station.stop_id)
+class TransitModule extends React.Component {
+  _renderItem = (item) => {
+    const { data, isEmpty, fetch, emptyText, header } = item
+    return <Slide
+      data={data}
+      isEmpty={isEmpty}
+      fetch={fetch}
+      emptyText={emptyText}
+      header={header}
+    />
   }
-  //TODO add data freshness indicator 
-  const favoriteStationsCountdowns = favoriteStations
-    .map(station => {
-      //keys in schedules are stop_id + N/S
-      northSchedule = station.stop_id + 'N' in scheduleData ? scheduleData[station.stop_id + 'N'] : [];
-      southSchedule = station.stop_id + 'S' in scheduleData ? scheduleData[station.stop_id + 'S'] : [];
-      return <CountdownClock
-        defaultOpen
-        key={station.stop_id}
-        id={station.stop_id}
-        isFetching={isFetching}
-        toggleFavorite={toggleFavorite}
-        schedules={[
-          ...southSchedule,
-          ...northSchedule
-        ]}
-        isFav
-        name={station.stop_name}
-      />
-    })
-  const nearbyStationCountdowns = nearbyStations
-    .map((station, index) => {
-      northSchedule = station.stop_id + 'N' in scheduleData ? scheduleData[station.stop_id + 'N'] : [];
-      southSchedule = station.stop_id + 'S' in scheduleData ? scheduleData[station.stop_id + 'S'] : [];
-      return <CountdownClock
-        defaultOpen={index == 0 ? true : false}
-        isNearby
-        key={station.stop_id}
-        id={station.stop_id}
-        toggleFavorite={toggleFavorite}
-        isFetching={isFetching}
-        schedules={[
-          ...northSchedule,
-          ...southSchedule
-        ]}
-        isFav={_isFav(station.stop_id)}
-        name={station.stop_name}
-      />
-    })
+  render() {
+    const {
+      isNearby: showNearbyStationsFirst,
+      scheduleLastUpdated,
+      scheduleData = {},
+      isFetching,
+      favoriteStations,
+      nearbyStations,
+      toggleFavorite,
+      fetchSchedule } = this.props
+    const isEmpty = Object.entries(scheduleData).length === 0 && scheduleData.constructor === Object
 
+    //make countdown clocks from schedule scheduleData
+    let northSchedule, southSchedule
+    const _isFav = (id) => {
+      return favoriteStations.some((station) => id === station.stop_id)
+    }
+    //TODO add data freshness indicator 
+    const favoriteStationsCountdowns = favoriteStations
+      .map(station => {
+        //keys in schedules are stop_id + N/S
+        northSchedule = station.stop_id + 'N' in scheduleData ? scheduleData[station.stop_id + 'N'] : [];
+        southSchedule = station.stop_id + 'S' in scheduleData ? scheduleData[station.stop_id + 'S'] : [];
+        return <CountdownClock
+          defaultOpen
+          key={station.stop_id}
+          id={station.stop_id}
+          isFetching={isFetching}
+          toggleFavorite={toggleFavorite}
+          schedules={[
+            ...southSchedule,
+            ...northSchedule
+          ]}
+          isFav
+          name={station.stop_name}
+        />
+      })
+    const nearbyStationCountdowns = nearbyStations
+      .map((station, index) => {
+        northSchedule = station.stop_id + 'N' in scheduleData ? scheduleData[station.stop_id + 'N'] : [];
+        southSchedule = station.stop_id + 'S' in scheduleData ? scheduleData[station.stop_id + 'S'] : [];
+        return <CountdownClock
+          defaultOpen={index == 0 ? true : false}
+          isNearby
+          key={station.stop_id}
+          id={station.stop_id}
+          toggleFavorite={toggleFavorite}
+          isFetching={isFetching}
+          schedules={[
+            ...northSchedule,
+            ...southSchedule
+          ]}
+          isFav={_isFav(station.stop_id)}
+          name={station.stop_name}
+        />
+      })
+    const isNearbyEmpty = nearbyStationCountdowns.length === 0
+    const isFavoriteEmpty = favoriteStationsCountdowns.length === 0
+    const nearbyEmptyText = "There are no stations nearby."
+    const favoriteEmptyText = "You haven't added any stations to your favorites.  \
+  Press on the station pins to add stations to your list."
 
-  return <View style={{ ...styles.container }}>
-    {showNearbyStationsFirst
-      ? <Swiper
-        loop={false}
-        paginationStyle={styles.paginationStyle}
-        style={styles.swiperContainer}
-      >
-        <View style={styles.swiperSlideContainer}>
-          <Bar header="nearby stations" />
-          <ScrollView
-            contentContainerStyle={styles.scrollView}
-            refreshControl={
-              <RefreshControl
-                // refreshing={isFetching} 
-                onRefresh={fetchSchedule} />}
-          >
-            {nearbyStationCountdowns.length === 0
-              ? <Text style={styles.noNearbyText}>There are no stations nearby.</Text>
-              : nearbyStationCountdowns
-            }
-          </ScrollView>
-        </View>
-        <View style={styles.swiperSlideContainer}>
-          <Bar header="favorite stations" />
-          <ScrollView
-            contentContainerStyle={styles.scrollView}
-            refreshControl={
-              <RefreshControl
-                // refreshing={false} 
-                onRefresh={fetchSchedule} />}
-          >
-            {favoriteStationsCountdowns.length === 0
-              ? <Text style={styles.noNearbyText}>You haven't added any stations to your favorites.  Press on the station pins to add stations to your list.</Text>
-              : favoriteStationsCountdowns
-            }
-          </ScrollView>
-        </View>
-      </Swiper>
-      : <Swiper loop={false} paginationStyle={styles.paginationStyle} style={styles.swiperContainer}>
-        <View style={styles.swiperSlideContainer}>
-          <Bar header="favorite stations" />
-          <ScrollView
-            contentContainerStyle={styles.scrollView}
-            refreshControl={
-              <RefreshControl
-                // refreshing={false} 
-                onRefresh={fetchSchedule} />}
-          >
-            {favoriteStationsCountdowns.length === 0
-              ? <Text style={styles.noNearbyText}>You haven't added any stations to your favorites.  Press on the station pins to add stations to your list.</Text>
-              : favoriteStationsCountdowns
-            }
-          </ScrollView>
-        </View>
-        <View style={styles.swiperSlideContainer}>
-          <Bar header="nearby stations" />
-          <ScrollView
-            contentContainerStyle={styles.scrollView}
-            refreshControl={
-              <RefreshControl
-                // refreshing={false} 
-                onRefresh={fetchSchedule} />}
-          >
-            {nearbyStationCountdowns.length === 0
-              ? <Text style={styles.noNearbyText}>There are no stations nearby.</Text>
-              : nearbyStationCountdowns
-            }
-          </ScrollView>
-        </View>
-      </Swiper>}
+    const _data = [
+      {
+        data: nearbyStationCountdowns,
+        isEmpty: isNearbyEmpty,
+        fetch: fetchSchedule,
+        emptyText: nearbyEmptyText,
+        header: "nearby stations",
+      },
+      {
+        data: favoriteStationsCountdowns,
+        isEmpty: isFavoriteEmpty,
+        fetch: fetchSchedule,
+        emptyText: favoriteEmptyText,
+        header: "favorite stations",
+      }
+    ]
+
+    return <Carousel 
+          style={styles.container}
+          autoplay={false}
+          pageInfo
+          isLooped={false}
+          pageInfoBottomContainerStyle={{ top: 5, right: 5, bottom: undefined, left: undefined }}
+          pageInfoBackgroundColor='transparent'
+        >
+          {this._renderItem(_data[0])}
+          {this._renderItem(_data[1])}
+        </Carousel>
+
+  }
+}
+const Slide = ({ header, isEmpty, fetch, emptyText, data }) => {
+  return <View style={styles.swiperSlideContainer}>
+    <Bar header={header} />
+    <ScrollView
+      // contentContainerStyle={styles.scrollView}
+      refreshControl={
+        <RefreshControl
+          refreshing={false}
+          onRefresh={fetch} />}
+    >
+      {isEmpty
+        ? <Text style={styles.noNearbyText}>{emptyText}</Text>
+        : data
+      }
+    </ScrollView>
   </View>
 }
 const Bar = ({ header }) => {
@@ -148,6 +137,7 @@ const Bar = ({ header }) => {
 
 const styles = StyleSheet.create({
   container: {
+    elevation: 5,
     shadowColor: colors.darkGrey,
     shadowOffset: {
       width: 3,
@@ -173,6 +163,7 @@ const styles = StyleSheet.create({
   },
   barText: {
     fontSize: fonts.md,
+    paddingBottom: 3,
   },
   swiperContainer: {
     display: 'flex',
