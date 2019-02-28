@@ -149,7 +149,7 @@ export const locateUserIfNeeded = () => (dispatch, getState) => {
 	//handle when user manually enable location & update location if >5 min since last locate 
 	if (!loc || (Date.now() - lastLocationUpdated) > 1000 * 60 * 5) {
 		dispatch(userLocate())
-		return Location.getCurrentPositionAsync({ enableHighAccuracy: true })
+		return Location.getCurrentPositionAsync({ enableHighAccuracy: false })
 			.then(pos => {
 				dispatch(locateError(null))
 				dispatch(userLocated(pos.coords.latitude, pos.coords.longitude))
