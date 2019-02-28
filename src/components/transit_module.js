@@ -1,6 +1,6 @@
 import React from 'react'
-import { View, Text, StyleSheet, ScrollView, RefreshControl, Dimensions } from 'react-native'
-import Carousel from 'react-native-looped-carousel'
+import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native'
+import Swiper from 'react-native-swiper'
 
 import CountdownClock from './countdown_clock'
 import { padding, fonts, colors, margin } from '../styles/base'
@@ -15,6 +15,7 @@ const TransitModule = ({
   nearbyStations,
   toggleFavorite,
   fetchSchedule }) => {
+
   const _renderItem = (item) => {
     const { data, isEmpty, fetch, emptyText, header } = item
     return <Slide
@@ -133,7 +134,6 @@ const Bar = ({ header }) => {
 
 const styles = StyleSheet.create({
   container: {
-    elevation: 5,
     shadowColor: colors.darkGrey,
     shadowOffset: {
       width: 3,
@@ -159,7 +159,6 @@ const styles = StyleSheet.create({
   },
   barText: {
     fontSize: fonts.md,
-    paddingBottom: 3,
   },
   swiperContainer: {
     display: 'flex',
