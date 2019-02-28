@@ -186,7 +186,7 @@ class AnimatedRowList extends React.Component {
   //TODO add spinner
   render() {
     const { isFetching, schedules } = this.props
-    if (isFetching && schedules.length === 0) {
+    if (isFetching) {
       return <View style={styles.rowContainer}>
         <Text style={styles.loadingText}>Loading...</Text>
       </View>
@@ -341,8 +341,7 @@ const styles = StyleSheet.create({
     paddingTop: padding.sm
   },
   row: {
-    // flex: 1,
-    display: 'flex',
+    flex: 1,
     height: 30,
     flexDirection: 'row',
     justifyContent: 'space-between',
