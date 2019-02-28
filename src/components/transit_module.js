@@ -1,17 +1,13 @@
 import React from 'react'
-import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native'
-import Swiper from 'react-native-swiper'
-import SideSwipe from 'react-native-sideswipe'
+import { View, Text, StyleSheet, ScrollView, RefreshControl, Dimensions } from 'react-native'
+import Carousel from 'react-native-looped-carousel'
 
 import CountdownClock from './countdown_clock'
 import { padding, fonts, colors, margin } from '../styles/base'
 
 
 class TransitModule extends React.Component {
-  state = {
-    currentIndex: 0
-  }
-  _renderItem = ({ itemIndex, currentIndex, item, animatedValue }) => {
+  _renderItem = (item) => {
     const { data, isEmpty, fetch, emptyText, header } = item
     return <Slide
       data={data}
@@ -31,12 +27,9 @@ class TransitModule extends React.Component {
       nearbyStations,
       toggleFavorite,
       fetchSchedule } = this.props
-
-
     const isEmpty = Object.entries(scheduleData).length === 0 && scheduleData.constructor === Object
 
     //make countdown clocks from schedule scheduleData
-
     let northSchedule, southSchedule
     const _isFav = (id) => {
       return favoriteStations.some((station) => id === station.stop_id)
@@ -85,7 +78,7 @@ class TransitModule extends React.Component {
     const nearbyEmptyText = "There are no stations nearby."
     const favoriteEmptyText = "You haven't added any stations to your favorites.  \
   Press on the station pins to add stations to your list."
-    
+
     const _data = [
       {
         data: nearbyStationCountdowns,
@@ -102,29 +95,29 @@ class TransitModule extends React.Component {
         header: "favorite stations",
       }
     ]
-    return <View style={{ ...styles.container }}>
-      <SideSwipe
-        index={this.state.currentIndex}
-        // itemWidth={CustomComponent.WIDTH}
-        style={{ flex: 1 }}
-        data={_data}
-        // contentOffset={contentOffset}
-        onIndexChange={index =>
-          this.setState(() => ({ currentIndex: index }))
-        }
-        renderItem={this._renderItem}
-      />
 
-    </View>
+    return <Carousel 
+          style={styles.container}
+          autoplay={false}
+          pageInfo
+          isLooped={false}
+          pageInfoBottomContainerStyle={{ top: 5, right: 5, bottom: undefined, left: undefined }}
+          pageInfoBackgroundColor='transparent'
+        >
+          {this._renderItem(_data[0])}
+          {this._renderItem(_data[1])}
+        </Carousel>
+
   }
 }
 const Slide = ({ header, isEmpty, fetch, emptyText, data }) => {
   return <View style={styles.swiperSlideContainer}>
     <Bar header={header} />
     <ScrollView
-      contentContainerStyle={styles.scrollView}
+      // contentContainerStyle={styles.scrollView}
       refreshControl={
         <RefreshControl
+          refreshing={false}
           onRefresh={fetch} />}
     >
       {isEmpty
@@ -144,6 +137,7 @@ const Bar = ({ header }) => {
 
 const styles = StyleSheet.create({
   container: {
+    elevation: 5,
     shadowColor: colors.darkGrey,
     shadowOffset: {
       width: 3,
@@ -169,6 +163,7 @@ const styles = StyleSheet.create({
   },
   barText: {
     fontSize: fonts.md,
+    paddingBottom: 3,
   },
   swiperContainer: {
     display: 'flex',

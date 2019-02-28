@@ -54,7 +54,7 @@ const HomeScreen = ({
         }}
         refreshControl={
           <RefreshControl
-            refreshing={false}
+            refreshing={weatherIsFetching || scheduleIsFetching}
             onRefresh={() => {
               fetchSchedule()
               fetchWeather()
