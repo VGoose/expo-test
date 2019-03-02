@@ -4,32 +4,27 @@ import { Text, View, StyleSheet, ScrollView } from 'react-native'
 import { Snapshot, CurrentSnapshot } from './snapshot'
 import { padding, margin, fonts, colors } from '../styles/base'
 
-const WeatherModule = ({ isFetching, weatherError, city, currentForecast, hourlyForecast, isCelsius }) => {
-	const _hourlyForecast = hourlyForecast.filter(f => (f.time * 1000) > Date.now())
+const WeatherModule = ({ isFetching, weatherError, currentForecast, hourlyForecast, isCelsius }) => {
+	const _hourlyForecast = hourlyForecast.filter(f => (f.time * 1000) > Date.now()).slice(0, 5)
 
 	return (
-		weatherError && _hourlyForecast.length === 0
-			? <View style={styles.container}>
-				<Bar city={city} />
-				<View style={styles.errorContainer}>
+		<View style={styles.container} testID="weather-module">
+			<Bar />
+			{weatherError && _hourlyForecast.length === 0
+				? <View style={styles.errorContainer}>
 					<Text style={styles.errorText}>We're having network issues.  Please try again later.</Text>
 				</View>
-			</View>
-			: _hourlyForecast.length === 0
-				? <View style={styles.container}>
-					<Bar />
-					<Text style={styles.noDataText}>
+				: _hourlyForecast.length === 0
+					? <Text style={styles.noDataText}>
 						No weather data currently available.
-						</Text>
-				</View>
-				: <View style={styles.container}>
-					<Bar city={city} />
-					<SnapshotList
+					</Text>
+					: <SnapshotList
 						hourly={_hourlyForecast}
 						isCelsius={isCelsius}
 						current={currentForecast}
 					/>
-				</View>
+			}
+		</View>
 	)
 }
 
@@ -42,11 +37,12 @@ const SnapshotList = ({ isStale = false, hourly, current, isCelsius }) => {
 			currentForecast={current}
 		/>
 	}
-	const hourlySnaps = hourly.map(f => {
+	const hourlySnaps = hourly.map((f, i) => {
 		time = new Date(f.time * 1000)
 		temp = Math.round(f.temperature)
 		apparentTemperature = Math.round(f.apparentTemperature)
 		return <Snapshot
+			index={i}
 			isCelsius={isCelsius}
 			key={f.time}
 			time={time}

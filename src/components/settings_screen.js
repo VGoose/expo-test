@@ -17,7 +17,7 @@ class SettingsScreen extends React.Component {
 
     return (
 
-      <View style={styles.container}>
+      <View style={styles.container} testID="settings-screen">
         <Bio />
         <View style={styles.settingContainer}>
           <SettingItem handlePress={() => this.props.navigation.navigate('SettingsDetail')} icon={require('../assets/icons/settings.png')} name="General" nav />

@@ -8,7 +8,6 @@ import { padding, fonts, colors, margin } from '../styles/base'
 
 const TransitModule = ({
   isNearby: showNearbyStationsFirst,
-  scheduleLastUpdated,
   scheduleData = {},
   isFetching,
   favoriteStations,
@@ -91,23 +90,24 @@ const TransitModule = ({
       header: "favorite stations",
     }
   ]
-
-  return <Carousel
-    style={styles.container}
-    autoplay={false}
-    pageInfo
-    currentPage={showNearbyStationsFirst ? 0 : 1}
-    isLooped={false}
-    pageInfoTextStyle={{fontSize: fonts.md}}
-    pageInfoBottomContainerStyle={{ top: 5, right: -10, bottom: undefined, left: undefined }}
-    pageInfoBackgroundColor='transparent'
-  >
-    {_renderItem(_data[0])}
-    {_renderItem(_data[1])}
-  </Carousel>
+  return <View testID={'transit-module'} style={styles.container}>
+    <Carousel
+      style={{flex: 1}}
+      autoplay={false}
+      pageInfo
+      currentPage={showNearbyStationsFirst ? 0 : 1}
+      isLooped={false}
+      pageInfoTextStyle={{ fontSize: fonts.md }}
+      pageInfoBottomContainerStyle={{ top: 5, right: -10, bottom: undefined, left: undefined }}
+      pageInfoBackgroundColor='transparent'
+    >
+        {_renderItem(_data[0])}
+        {_renderItem(_data[1])}
+    </Carousel>
+  </View>
 }
 const Slide = ({ header, isEmpty, fetch, emptyText, data }) => {
-  return <View style={styles.swiperSlideContainer}>
+  return <View style={styles.swiperSlideContainer} testID="transit-slide">
     <Bar header={header} />
     <ScrollView
       // contentContainerStyle={styles.scrollView}
@@ -121,7 +121,7 @@ const Slide = ({ header, isEmpty, fetch, emptyText, data }) => {
         : data
       }
     </ScrollView>
-  </View>
+    </View>
 }
 const Bar = ({ header }) => {
   return (

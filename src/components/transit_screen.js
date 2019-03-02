@@ -66,7 +66,7 @@ export default class TransitScreen extends React.Component {
   render() {
     return (
       <Page pageName="Transit">
-        <View style={styles.container}>
+        <View style={styles.container} testID="transit-screen">
           <SearchBar inputRef={this.inputRef} changeHandler={this._onChangeHandler} />
           <View style={styles.listContainer}>
             <FlatList

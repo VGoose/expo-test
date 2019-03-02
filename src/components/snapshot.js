@@ -68,9 +68,9 @@ const Time = ({ time, min }) => {
     }
     return min ? <Text style={styles.timeText}>{disp}:{_min} {sign}</Text> : <Text style={styles.timeText}>{disp} {sign}</Text>
 }
-export const Snapshot = ({ time, precipProb, iconCode, temp, isCelsius, apparentTemperature }) => {
+export const Snapshot = ({ index, time, precipProb, iconCode, temp, isCelsius, apparentTemperature }) => {
     return (
-        <View style={styles.hourlyContainer}>
+        <View style={styles.hourlyContainer} testID={`forecast-hourly-${index}`}>
             <View style={styles.timePrecipContainer}>
                 <Time time={time} />
 
@@ -93,7 +93,7 @@ export const CurrentSnapshot = ({ currentForecast, isCelsius }) => {
     const temp = isCelsius ? Math.round((temperature - 32) * 5 / 9) : Math.round(temperature)
     const apTemp = isCelsius ? Math.round((apparentTemperature - 32) * 5 / 9) : Math.round(apparentTemperature)
     return (
-        <View style={styles.currentContainer}>
+        <View style={styles.currentContainer} testID="forecast-current">
             <View style={styles.timePrecipContainer}>
                 <Time min time={_time} />
                 <PrecipProb precipProb={precipProbability} />

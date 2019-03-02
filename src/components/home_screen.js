@@ -42,13 +42,14 @@ const HomeScreen = ({
 
 }) => {
   if (userIsFetching || showSpinner) {
-    return <View></View>
+    return <View testID="loading-screen" style={{ flex: 1 }}></View>
   }
   return (
 
     <Page pageName="Home">
       {!isLocationEnabled ? <OfflineBar location /> : null}
       <ScrollView
+        testID="home-screen"
         contentContainerStyle={{
           ...styles.container,
         }}

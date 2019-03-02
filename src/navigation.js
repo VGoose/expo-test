@@ -11,13 +11,22 @@ import { margin } from './styles/base';
 const AppNavigator = createBottomTabNavigator(
   {
     Home: {
-      screen: Home
+      screen: Home,
+      navigationOptions: {
+        tabBarTestID: 'home-tab'
+      }
     },
     Transit: {
-      screen: Transit
+      screen: Transit,
+      navigationOptions: {
+        tabBarTestID: 'transit-tab'
+      }
     },
     Settings: {
-      screen: SettingScreen
+      screen: SettingScreen,
+      navigationOptions: {
+        tabBarTestID: 'settings-tab'
+      }
     },
   },
   {
@@ -42,11 +51,6 @@ const AppNavigator = createBottomTabNavigator(
             : require('./assets/icons/train.png')
           return <Image source={icon} />
 
-        } else if (routeName === 'Weather') {
-          icon = focused
-            ? require('./assets/icons/weather_a.png')
-            : require('./assets/icons/weather.png')
-          return <Image source={icon} />
         }
       },
     }),
