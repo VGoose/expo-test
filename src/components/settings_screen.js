@@ -20,7 +20,7 @@ class SettingsScreen extends React.Component {
       <View style={styles.container} testID="settings-screen">
         <Bio />
         <View style={styles.settingContainer}>
-          <SettingItem handlePress={() => this.props.navigation.navigate('SettingsDetail')} icon={require('../assets/icons/settings.png')} name="General" nav />
+          <SettingItem tID="general-settings" handlePress={() => this.props.navigation.navigate('SettingsDetail')} icon={require('../assets/icons/settings.png')} name="General" nav />
           <SettingItem handlePress={() => this.props.navigation.navigate('AboutDetail')} icon={require('../assets/icons/info.png')} name="About" nav />
           <SettingItem handlePress={() => Linking.openURL('itms-apps://itunes.apple.com/app/id{appStoreId}?action=write-review')} icon={require('../assets/icons/rate.png')} name="Rate" />
           <SettingItem handlePress={() => Linking.openURL('mailto:anhvouw@gmail.com?subject=gogonow_feedback')} icon={require('../assets/icons/mail.png')} name="Contact" />
@@ -31,10 +31,9 @@ class SettingsScreen extends React.Component {
   }
 }
 
-const SettingItem = ({ name, icon, nav, handlePress }) => {
+const SettingItem = ({ tID, name, icon, nav, handlePress }) => {
   return <TouchableHighlight onPress={handlePress}>
-    <View style={styles.itemContainer}>
-
+    <View style={styles.itemContainer} testID={tID}>
       <Image style={styles.itemImage} source={icon} />
       <View style={styles.itemName}>
         <Text style={styles.itemNameText}>{name}</Text>

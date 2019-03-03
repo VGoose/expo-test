@@ -8,7 +8,7 @@ class SettingsDetail extends React.Component {
 
   }
   _renderItem = ({ item, section }) =>
-    <Option key={`${section}.${item}`} name={item.name} type={item.type} value={item.value} onChange={item.onChange} />
+    <Option tID={item.testID} key={`${section}.${item}`} name={item.name} type={item.type} value={item.value} onChange={item.onChange} />
 
 
   _renderSectionHeader = ({ section: { title } }) =>
@@ -30,7 +30,8 @@ class SettingsDetail extends React.Component {
                 name: 'Show Nearby Stations First',
                 type: 'switch',
                 value: isNearby,
-                onChange: toggleNearby
+                onChange: toggleNearby,
+                testID: 'switch-show-nearby'
               }]
           },
           {
@@ -40,7 +41,8 @@ class SettingsDetail extends React.Component {
                 name: 'Display Temp in Celsius',
                 type: 'switch',
                 value: isCelsius,
-                onChange: toggleCelsius
+                onChange: toggleCelsius,
+                testID: 'switch-toggle-celsius'
               }]
           },
         ]}
@@ -55,10 +57,10 @@ const Header = ({ title }) => {
   </View>)
 }
 
-const Option = ({ name, type, value, onChange }) => {
+const Option = ({ tID, name, type, value, onChange }) => {
   return (<View style={styles.optionContainer}>
     <Text style={styles.optionName}>{name}</Text>
-    <Switch value={value} onValueChange={value => onChange(value)} />
+    <Switch testID={tID} value={value} onValueChange={value => onChange(value)} />
   </View>)
 }
 

@@ -83,7 +83,7 @@ class CountdownClock extends React.Component {
 
 
   render() {
-    const { isNearby, isFav, name, schedules = {}, toggleFavorite, id, fetchSchedule, isFetching, onPressItem } = this.props
+    const { tID, isNearby, isFav, name, schedules = {}, toggleFavorite, id, fetchSchedule, isFetching, onPressItem } = this.props
     //handle 'stations' that serve no trains
     if (STATIONS[id].trains.length === 0) {
       return null
@@ -92,7 +92,7 @@ class CountdownClock extends React.Component {
       .map(train => <Badge key={train} train={train} />)
 
     return (
-      <Animated.View style={{ ...styles.countdownClock, height: this.state.height, opacity: this.state.opacity }}>
+      <Animated.View testID={tID} style={{ ...styles.countdownClock, height: this.state.height, opacity: this.state.opacity }}>
         <Bar
           toggle={() => this.state.open ? this.collapse() : this.open()}
           fadeOut={this.barFadeOut}
@@ -100,9 +100,11 @@ class CountdownClock extends React.Component {
           badges={badges}
           isFav={isFav}
           isNearby={isNearby}
-          favorite={toggleFavorite ? toggleFavorite : onPressItem} id={id} />
+          favorite={toggleFavorite ? toggleFavorite : onPressItem} 
+          id={id} />
         {this.state.open
           ? <AnimatedRowList
+            tID={id}
             animatedOpacity={this.state.rowOpacity}
             schedules={schedules}
             isFetching={isFetching} />
@@ -115,10 +117,10 @@ class CountdownClock extends React.Component {
 const Star = ({ isNearby, fadeOut, favorite, id, isFav }) => {
   return (
     isFav
-      ? <TouchableHighlight
+      ? <TouchableHighlight 
         underlayColor='transparent'
         activeOpacity={0.0}
-
+        testID={`${id}-fave`}
         onPress={isNearby
           ? () => favorite(id)
           : () => fadeOut(() => favorite(id))
@@ -128,6 +130,7 @@ const Star = ({ isNearby, fadeOut, favorite, id, isFav }) => {
       </TouchableHighlight>
 
       : <TouchableHighlight
+        testID={`${id}-fave`}
         underlayColor='transparent'
         activeOpacity={0.0}
         onPress={() => favorite(id)}>
@@ -185,7 +188,7 @@ const Badge = ({ train, isRowBadge }) => {
 class AnimatedRowList extends React.Component {
   //TODO add spinner
   render() {
-    const { isFetching, schedules } = this.props
+    const { isFetching, schedules, tID } = this.props
     if (isFetching && schedules.length === 0) {
       return <View style={styles.rowContainer}>
         <Text style={styles.loadingText}>Loading...</Text>
@@ -208,7 +211,7 @@ class AnimatedRowList extends React.Component {
                 time={time}
               />
             ))
-          return < View style={styles.rowContainer} >
+          return < View style={styles.rowContainer} testID={`${tID}-0`}>
             {rows}
           </View>
         }}
@@ -216,19 +219,22 @@ class AnimatedRowList extends React.Component {
     )
   }
 }
-const Row = ({ animatedOpacity, schedule, index, time }) => {
+const Row = ({ animatedOpacity, schedule, index, time, tID }) => {
   let seconds = Math.floor((new Date(schedule.time) - time) / 1000);
   let minutes = Math.floor(seconds / 60);
   let countdown = seconds >= 60 ? minutes : seconds > 30 ? seconds : 'now';
   return (
 
     <Animated.View
+      testID={`${tID}-${index}`}
       style={{
         ...styles.row,
         opacity: animatedOpacity,
       }}
     >
-      <View style={styles.row_left}>
+      <View style={styles.row_left}
+        testID={`${tID}-${index}`}
+      >
 
         <Badge isRowBadge train={schedule.train} />
         <Text

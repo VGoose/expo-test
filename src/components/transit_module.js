@@ -15,8 +15,9 @@ const TransitModule = ({
   toggleFavorite,
   fetchSchedule }) => {
   const _renderItem = (item) => {
-    const { data, isEmpty, fetch, emptyText, header } = item
+    const { data, isEmpty, fetch, emptyText, header, id } = item
     return <Slide
+      id={id}
       data={data}
       isEmpty={isEmpty}
       fetch={fetch}
@@ -36,6 +37,7 @@ const TransitModule = ({
       northSchedule = station.stop_id + 'N' in scheduleData ? scheduleData[station.stop_id + 'N'] : [];
       southSchedule = station.stop_id + 'S' in scheduleData ? scheduleData[station.stop_id + 'S'] : [];
       return <CountdownClock
+        tID={`clock-1-${station.stop_id}`}
         defaultOpen
         key={station.stop_id}
         id={station.stop_id}
@@ -54,6 +56,7 @@ const TransitModule = ({
       northSchedule = station.stop_id + 'N' in scheduleData ? scheduleData[station.stop_id + 'N'] : [];
       southSchedule = station.stop_id + 'S' in scheduleData ? scheduleData[station.stop_id + 'S'] : [];
       return <CountdownClock
+        tID={`clock-0-${station.stop_id}`}
         defaultOpen={index == 0 ? true : false}
         isNearby
         key={station.stop_id}
@@ -76,6 +79,7 @@ const TransitModule = ({
 
   const _data = [
     {
+      id: 0,
       data: nearbyStationCountdowns,
       isEmpty: isNearbyEmpty,
       fetch: fetchSchedule,
@@ -83,6 +87,7 @@ const TransitModule = ({
       header: "nearby stations",
     },
     {
+      id: 1,
       data: favoriteStationsCountdowns,
       isEmpty: isFavoriteEmpty,
       fetch: fetchSchedule,
@@ -92,7 +97,7 @@ const TransitModule = ({
   ]
   return <View testID={'transit-module'} style={styles.container}>
     <Carousel
-      style={{flex: 1}}
+      style={{ flex: 1 }}
       autoplay={false}
       pageInfo
       currentPage={showNearbyStationsFirst ? 0 : 1}
@@ -101,15 +106,16 @@ const TransitModule = ({
       pageInfoBottomContainerStyle={{ top: 5, right: -10, bottom: undefined, left: undefined }}
       pageInfoBackgroundColor='transparent'
     >
-        {_renderItem(_data[0])}
-        {_renderItem(_data[1])}
+      {_renderItem(_data[0])}
+      {_renderItem(_data[1])}
     </Carousel>
   </View>
 }
-const Slide = ({ header, isEmpty, fetch, emptyText, data }) => {
+const Slide = ({ header, isEmpty, fetch, emptyText, data, id }) => {
   return <View style={styles.swiperSlideContainer} testID="transit-slide">
     <Bar header={header} />
     <ScrollView
+    testID={`countdown-list-${id}`}
       // contentContainerStyle={styles.scrollView}
       refreshControl={
         <RefreshControl
@@ -121,7 +127,7 @@ const Slide = ({ header, isEmpty, fetch, emptyText, data }) => {
         : data
       }
     </ScrollView>
-    </View>
+  </View>
 }
 const Bar = ({ header }) => {
   return (
