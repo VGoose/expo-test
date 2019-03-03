@@ -2,20 +2,21 @@ const { reloadApp } = require('detox-expo-helpers');
 
 describe('App Start Up', () => {
   beforeAll(async () => {
-    await reloadApp();
-  });
-  // test('should have loading screen while data is fetching', async () => {
-  //   await expect(element(by.id('loading-screen'))).toBeVisible();
-  // });
+    await reloadApp()
+  })
+  //TODO: figure out how to sync if detox waiting too long
+  test.skip('should have loading screen while data is fetching', async () => {
+    await expect(element(by.id('loading-screen'))).toBeVisible()
+  })
   test('should show home screen with weather and transit data', async () => {
-    await expect(element(by.id('home-screen'))).toBeVisible();
+    await expect(element(by.id('home-screen'))).toBeVisible()
     //see weather
-    await expect(element(by.id('weather-module'))).toBeVisible();
+    await expect(element(by.id('weather-module'))).toBeVisible()
 
     //see transit
-    await expect(element(by.id('transit-module'))).toBeVisible();
+    await expect(element(by.id('transit-module'))).toBeVisible()
     await element(by.label('nearby stations')).swipe('left', 'fast', 0.25)
-    expect(element(by.label('favorite stations'))).toBeVisible();
+    expect(element(by.label('favorite stations'))).toBeVisible()
 
   });
 
@@ -37,22 +38,42 @@ describe('App Start Up', () => {
     })
 })
 
-describe.only('Weather', () => {
+describe('Weather', () => {
   test('User should be able to see a scrollable display of current and hourly \
     forecast', async () => {
       await expect(element(by.id('weather-scrollview'))).toBeVisible()
       await expect(element(by.id('forecast-current'))).toBeVisible()
-      await expect(element(by.id('forecast-hourly-0'))).toBeVisible()
-      //test scroll
-      //current has time near now
-      //shows celsius/fahrenheit 
-      //hourly has time > than now
+      await expect(element(by.id('forecast-current-time'))).toBeVisible()
+      await expect(element(by.id('forecast-current-temp'))).toBeVisible()
+      await expect(element(by.id('forecast-current-apTemp'))).toBeVisible()
+      await expect(element(by.id('forecast-current-unit'))).toBeVisible()
+      await expect(element(by.id('forecast-current-apUnit'))).toBeVisible()
+      
+      await expect(element(by.id('forecast-hourly-2'))).toBeVisible()
+      await expect(element(by.id('forecast-hourly-time')).atIndex(2)).toBeVisible()
+      await expect(element(by.id('forecast-hourly-temp')).atIndex(2)).toBeVisible()
+
+      await element(by.id('forecast-current')).swipe('left', 'slow', 0.2)
     })
   test('User should be able to switch between Celsius and Fahrenheit',
     async () => {
+      await element(by.id('settings-tab')).tap()
+      await element(by.id('general-settings')).tap()
+      //wait for transition 
+      await waitFor(element(by.id('____'))).toExist().withTimeout(1000)
+      await element(by.id('switch-toggle-celsius')).tapAtPoint({ x: 15, y: 15 })
 
+      await element(by.id('home-tab')).tap()
+      await expect(element(by.id('forecast-current-unit'))).toHaveLabel('C')
+      await expect(element(by.id('forecast-current-apUnit'))).toHaveLabel('C')
+
+      await element(by.id('settings-tab')).tap()
+      await element(by.id('switch-toggle-celsius')).tapAtPoint({ x: 15, y: 15 })
+
+      await element(by.id('home-tab')).tap()
+      await expect(element(by.id('forecast-current-unit'))).toHaveLabel('F')
+      await expect(element(by.id('forecast-current-apUnit'))).toHaveLabel('F')
     })
-
 })
 
 describe('Transit', () => {

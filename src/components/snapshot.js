@@ -52,7 +52,7 @@ const PrecipProb = ({ precipProb }) => {
 const Temp = ({ temp, apTemp, isCelsius }) => {
     const _temp = isCelsius ? Math.round((temp - 32) * 5 / 9) : Math.round(temp)
     const _apTemp = isCelsius ? Math.round((apTemp - 32) * 5 / 9) : Math.round(apTemp)
-    return <Text style={styles.tempDescNum}>{`${_temp}   ${_apTemp}`}</Text>
+    return <Text testID="forecast-hourly-temp" style={styles.tempDescNum}>{`${_temp}   ${_apTemp}`}</Text>
 }
 const Time = ({ time, min }) => {
     const hour = time.getHours()
@@ -61,19 +61,20 @@ const Time = ({ time, min }) => {
     hour >= 12 ? sign = 'PM' : sign = 'AM'
     if (hour > 12) {
         disp = hour - 12
-    } else if(hour === 0) {
+    } else if (hour === 0) {
         disp = 12
     } else {
         disp = hour
     }
-    return min ? <Text style={styles.timeText}>{disp}:{_min} {sign}</Text> : <Text style={styles.timeText}>{disp} {sign}</Text>
+    return min
+        ? <Text testID="forecast-current-time" style={styles.timeText}>{disp}:{_min} {sign}</Text>
+        : <Text testID="forecast-hourly-time" style={styles.timeText}>{disp} {sign}</Text>
 }
 export const Snapshot = ({ index, time, precipProb, iconCode, temp, isCelsius, apparentTemperature }) => {
     return (
         <View style={styles.hourlyContainer} testID={`forecast-hourly-${index}`}>
             <View style={styles.timePrecipContainer}>
                 <Time time={time} />
-
                 <PrecipProb precipProb={precipProb} />
 
             </View>
@@ -104,15 +105,15 @@ export const CurrentSnapshot = ({ currentForecast, isCelsius }) => {
             <View style={styles.tempContainer}>
                 <View style={styles.tempDescContainer}>
                     <View style={styles.tempNumContainer}>
-                        <Text style={styles.tempDescNum}>{`${temp}`}</Text>
-                        <Text style={styles.tempDescUnit}>{`${unit}`}</Text>
+                        <Text testID="forecast-current-temp" style={styles.tempDescNum}>{`${temp}`}</Text>
+                        <Text testID="forecast-current-unit" style={styles.tempDescUnit}>{`${unit}`}</Text>
                     </View>
                     <Text style={styles.tempDescText}>Temp</Text>
                 </View>
                 <View style={styles.tempDescContainer}>
                     <View style={styles.tempNumContainer}>
-                        <Text style={styles.tempDescNum}>{`${apTemp}`}</Text>
-                        <Text style={styles.tempDescUnit}>{`${unit}`}</Text>
+                        <Text testID="forecast-current-apTemp" style={styles.tempDescNum}>{`${apTemp}`}</Text>
+                        <Text testID="forecast-current-apUnit" style={styles.tempDescUnit}>{`${unit}`}</Text>
                     </View>
                     <Text style={styles.tempDescText}>Feels Like</Text>
                 </View>
@@ -138,8 +139,8 @@ const styles = StyleSheet.create({
     },
     currentContainer: {
         // borderTopWidth: 1,
-		// borderBottomWidth: 1,
-		// borderColor: colors.darkGrey,
+        // borderBottomWidth: 1,
+        // borderColor: colors.darkGrey,
         display: 'flex',
         flexDirection: 'column',
         padding: padding.sm,

@@ -6,7 +6,6 @@ import { padding, margin, fonts, colors } from '../styles/base'
 
 const WeatherModule = ({ isFetching, weatherError, currentForecast, hourlyForecast, isCelsius }) => {
 	const _hourlyForecast = hourlyForecast.filter(f => (f.time * 1000) > Date.now()).slice(0, 5)
-
 	return (
 		<View style={styles.container} testID="weather-module">
 			<Bar />
@@ -54,12 +53,7 @@ const SnapshotList = ({ isStale = false, hourly, current, isCelsius }) => {
 	})
 	const snaps = [currentSnap, ...hourlySnaps]
 	return (
-		// isStale
-		// ? <ScrollView horizontal contentContainerStyle={{ ...styles.snapshotListContainer, borderColor: colors.warning }}>
-		// 	{hourlySnaps}
-		// </ScrollView>
-		<ScrollView horizontal contentContainerStyle={{ ...styles.snapshotListContainer }}>
-			{/* fix flashing issue with only current snap showing */}
+		<ScrollView testID="weather-scrollview" horizontal contentContainerStyle={{ ...styles.snapshotListContainer }}>
 			{snaps.length > 1 ? snaps : null}
 		</ScrollView>
 	)
