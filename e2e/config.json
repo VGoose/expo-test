@@ -1,4 +1,9 @@
 {
-    "setupFilesAfterEnv": ["./init.js"],
-    "testEnvironment": "node"
+    "setupFilesAfterEnv": [
+        "./init.js"
+    ],
+    "testEnvironment": "node",
+    "reporters": [
+        "<rootDir>detox-jest-pretty-log.js"
+    ]
 }
