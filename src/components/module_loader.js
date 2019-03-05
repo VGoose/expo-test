@@ -7,11 +7,11 @@ export default class ModuleLoader extends React.PureComponent {
   translate = () => {
     Animated.timing(this.x, {
       toValue: this.state.width - 20,
-      duration: 1000,
+      duration: 500,
     }).start(() => {
       Animated.timing(this.x, {
         toValue: 0,
-        duration: 1000
+        duration: 500
       }).start(this.translate)
     })
   }
