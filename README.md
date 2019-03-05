@@ -1,8 +1,10 @@
 # gogonow
+<img src="https://i.imgur.com/F0ma1HW.gif" width="200" height="354" />
 
-Originally inspired from not wanting to wait in subway stations any minute longer than necessary during the summer months, **gogonow** is an app the lets you quickly see transit countdown clocks (those displays you see in subway stations) in real time.   It's evolved to also display weather data, to prepare you to get out the door quicker. 
 
-It's not a navigation app - it's an app targeted to people who live in and around New York city, who are familiar with the subway systems and just want to know when the train is coming. 
+Originally inspired from not wanting to wait in subway stations any minute longer than necessary during the summer months, **gogonow** is an app for NYC that lets you quickly see transit countdown clocks (those displays you see in subway stations) in real time.   It's evolved to also display weather data, becoming a one-stop data screen to let you prepare and get out the door quicker. 
+
+The intended use is a quick check before heading out the door. 
 
 
 ## Overview
