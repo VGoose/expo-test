@@ -41,13 +41,13 @@ const HomeScreen = ({
   fetchWeather,
 
 }) => {
-  if (userIsFetching || showSpinner) {
-    return <View testID="loading-screen" style={{ flex: 1 }}></View>
-  }
   return (
-
     <Page pageName="Home">
-      {!isLocationEnabled ? <OfflineBar location /> : null}
+      {(showSpinner || userIsFetching)
+        ? <View testID="loading-screen" style={{ position: 'relative', left: 0, height: 1000 }}></View>
+        : null
+      }
+      {isLocationEnabled ? null : <OfflineBar location />}
       <ScrollView
         testID="home-screen"
         contentContainerStyle={{
@@ -109,7 +109,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
-
   },
   offlineContainer: {
     display: 'flex',
