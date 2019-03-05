@@ -43,7 +43,7 @@ const HomeScreen = ({
 }) => {
   return (
     <Page pageName="Home">
-      {(showSpinner || userIsFetching)
+      {(showSpinner)
         ? <View testID="loading-screen" style={{ position: 'relative', left: 0, height: 1000 }}></View>
         : null
       }
@@ -55,7 +55,8 @@ const HomeScreen = ({
         }}
         refreshControl={
           <RefreshControl
-            refreshing={scheduleIsFetching || weatherIsFetching}
+            // refreshing={scheduleIsFetching || weatherIsFetching}
+            refreshing={false}
             onRefresh={() => {
               fetchSchedule()
               fetchWeather()
