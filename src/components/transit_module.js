@@ -5,6 +5,7 @@ import Carousel from 'react-native-looped-carousel'
 import CountdownClock from './countdown_clock'
 import { padding, fonts, colors, margin } from '../styles/base'
 
+import ModuleLoader from './module_loader'
 
 const TransitModule = ({
   isNearby: showNearbyStationsFirst,
@@ -17,6 +18,7 @@ const TransitModule = ({
   const _renderItem = (item) => {
     const { data, isEmpty, fetch, emptyText, header, id } = item
     return <Slide
+      isFetching={isFetching}
       id={id}
       data={data}
       isEmpty={isEmpty}
@@ -96,6 +98,7 @@ const TransitModule = ({
     }
   ]
   return <View testID={'transit-module'} style={styles.container}>
+    
     <Carousel
       style={{ flex: 1 }}
       autoplay={false}
@@ -111,11 +114,12 @@ const TransitModule = ({
     </Carousel>
   </View>
 }
-const Slide = ({ header, isEmpty, fetch, emptyText, data, id }) => {
+const Slide = ({ header, isEmpty, fetch, emptyText, data, id, isFetching }) => {
   return <View style={styles.swiperSlideContainer} testID="transit-slide">
     <Bar header={header} />
+    {isFetching ? <ModuleLoader /> : null}
     <ScrollView
-    testID={`countdown-list-${id}`}
+      testID={`countdown-list-${id}`}
       // contentContainerStyle={styles.scrollView}
       refreshControl={
         <RefreshControl

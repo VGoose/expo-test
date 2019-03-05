@@ -4,11 +4,14 @@ import { Text, View, StyleSheet, ScrollView } from 'react-native'
 import { Snapshot, CurrentSnapshot } from './snapshot'
 import { padding, margin, fonts, colors } from '../styles/base'
 
+import ModuleLoader from './module_loader'
+
 const WeatherModule = ({ isFetching, weatherError, currentForecast, hourlyForecast, isCelsius }) => {
 	const _hourlyForecast = hourlyForecast.filter(f => (f.time * 1000) > Date.now()).slice(0, 5)
 	return (
 		<View style={styles.container} testID="weather-module">
 			<Bar />
+			{isFetching ? <ModuleLoader /> : null}
 			{weatherError && _hourlyForecast.length === 0
 				? <View style={styles.errorContainer}>
 					<Text style={styles.errorText}>We're having network issues.  Please try again later.</Text>
