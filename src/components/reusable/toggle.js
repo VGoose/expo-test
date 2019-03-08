@@ -1,7 +1,6 @@
 import React from 'react'
-import { View } from 'react-native'
 
-export default class Toggle extends React.Component {
+export default class Toggle extends React.PureComponent {
   state = {
     show: false,
   }

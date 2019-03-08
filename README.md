@@ -21,7 +21,10 @@ This app is built with [React-Native](https://facebook.github.io/react-native/),
 
 ## Changelog
 
-**V0.1.9** - improve initial start up locating time
+V0.2.0 - improve user loading experience
+
+V0.1.9 - improve initial start up locating time
+
 V0.1.8 - initial release to IOS app store
 
 ## Roadmap
