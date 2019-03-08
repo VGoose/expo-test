@@ -9,7 +9,7 @@ The intended use is a quick check before heading out the door.
 
 ## Overview
 
-**gogonow** has two data sources.  For weather, it uses [Dark Sky](https://darksky.net/) (which is fantastic), and the [MTA Real Time Data Feed](http://datamine.mta.info/).  Currently V0.1.9 is released to the IOS store, the app is still in development for the Google Play Store.  
+**gogonow** has two data sources.  For weather, it uses [Dark Sky](https://darksky.net/) (which is fantastic), and the [MTA Real Time Data Feed](http://datamine.mta.info/).  Currently V0.2.0 is released to the IOS store, the app is still in development for the Google Play Store.  
 
 The backend is hosted on as a lambda function on [Netlify](https://www.netlify.com/). 
 
